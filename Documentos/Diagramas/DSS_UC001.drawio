@@ -1,0 +1,115 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Página-1" id="pdV7TeNA21PuPn3l0jzV">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Gestor Hospitalar" vertex="1">
+          <mxGeometry height="60" width="30" x="100" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-5" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Gestor Hospitalar" vertex="1">
+          <mxGeometry height="60" width="30" x="100" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Plantão Já" vertex="1">
+          <mxGeometry height="60" width="120" x="354" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-9" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Administrador" vertex="1">
+          <mxGeometry height="60" width="30" x="690" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-10" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Administrador" vertex="1">
+          <mxGeometry height="60" width="30" x="690" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-12" edge="1" parent="1" source="eFYN0eH-Dxms-sGCJKPP-5" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="eFYN0eH-Dxms-sGCJKPP-1" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="100" y="650" as="sourcePoint" />
+            <mxPoint x="150" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-13" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="704.47" y="1110" as="sourcePoint" />
+            <mxPoint x="704.47" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Plantão Já" vertex="1">
+          <mxGeometry height="60" width="120" x="354" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-15" edge="1" parent="1" source="eFYN0eH-Dxms-sGCJKPP-14" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="eFYN0eH-Dxms-sGCJKPP-8" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="460" y="1030" as="sourcePoint" />
+            <mxPoint x="460" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-16" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="120" y="570" as="sourcePoint" />
+            <mxPoint x="410" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-17" connectable="0" parent="eFYN0eH-Dxms-sGCJKPP-16" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="SolicitarCadastroGestor(dadosPessoais,MeioContato)" vertex="1">
+          <mxGeometry relative="1" x="0.0672" y="-3" as="geometry">
+            <mxPoint x="-15" y="-13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-18" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;dashed=1;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="414" y="660" as="sourcePoint" />
+            <mxPoint x="704" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-19" connectable="0" parent="eFYN0eH-Dxms-sGCJKPP-18" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="dispararEmail(MeioContato)" vertex="1">
+          <mxGeometry relative="1" x="0.0672" y="-3" as="geometry">
+            <mxPoint x="-15" y="-13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-20" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;dashed=1;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="414" y="630" as="sourcePoint" />
+            <mxPoint x="120" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-21" connectable="0" parent="eFYN0eH-Dxms-sGCJKPP-20" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="exibirConfirmação(&quot;Análise&quot;)" vertex="1">
+          <mxGeometry relative="1" x="0.0672" y="-3" as="geometry">
+            <mxPoint x="-15" y="-13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-22" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&amp;nbsp;Etapa Manual: Administrador contata o Gestor &lt;br&gt;pelo meio oficial para verificar a posição.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="610" x="110" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-23" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="704" y="860" as="sourcePoint" />
+            <mxPoint x="410" y="860" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-24" connectable="0" parent="eFYN0eH-Dxms-sGCJKPP-23" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="aprovarGestor()" vertex="1">
+          <mxGeometry relative="1" x="0.0672" y="-3" as="geometry">
+            <mxPoint x="-15" y="-13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-25" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;dashed=1;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="414" y="930" as="sourcePoint" />
+            <mxPoint x="704" y="930" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-26" connectable="0" parent="eFYN0eH-Dxms-sGCJKPP-25" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="confirmarAprovacao()" vertex="1">
+          <mxGeometry relative="1" x="0.0672" y="-3" as="geometry">
+            <mxPoint x="-15" y="-13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-27" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;dashed=1;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="414" y="980" as="sourcePoint" />
+            <mxPoint x="120" y="980" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eFYN0eH-Dxms-sGCJKPP-28" connectable="0" parent="eFYN0eH-Dxms-sGCJKPP-27" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="NotificarAprovacao()" vertex="1">
+          <mxGeometry relative="1" x="0.0672" y="-3" as="geometry">
+            <mxPoint x="-15" y="-13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
