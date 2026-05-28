@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: palntao-ja-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/plantao_ja?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: #insira a senha
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+    show-sql: false
+    open-in-view: false
