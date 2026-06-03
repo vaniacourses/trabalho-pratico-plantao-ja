@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 0 auto;
+    width: 30%;
+}
+
+form input {
+    padding: .3rem;
+    background-color: #000;
+    border: 1px solid #bbb;
+}
+
+form input[type="text"]:focus, form input[type="password"]:focus {
+    border: none;
+}
+
+form input, button {
+    margin: 1rem 0rem 0rem 1rem;
+}
+
+form button {
+    background-color: rgb(0, 0, 60);
+    color: #ccc;
+    padding: 1rem;
+    text-decoration: none;
+    border: none;
+    font-weight: bold;
+    font-size: .9rem;
+}
+button:hover{
+    color: #fff;
+    border: 2px solid #000;
+}
