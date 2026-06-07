@@ -35,4 +35,7 @@ public class Hospital {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
+
+    @Column(unique = true)
+    private Long gestorId;
 }
