@@ -7,9 +7,16 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server:gestor": "json-server --watch data/gestor.json --port 5001",
+    "server:hospital": "json-server --watch data/hospital.json --port 5002",
+    "server:medico": "json-server --watch data/medico.json --port 5003",
+    "server:plantao": "json-server --watch data/plantao.json --port 5004"
   },
   "dependencies": {
+    "express": "^5.2.1",
+    "json-server": "^0.17.4",
+    "json-server-auth": "^2.1.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.16.0"

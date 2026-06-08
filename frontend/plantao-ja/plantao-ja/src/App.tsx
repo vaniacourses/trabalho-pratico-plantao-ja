@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import './App.css'
+import SignInGestorPage from './pages/SignInGestorPage';
 
 const App: React.FC<{}> = () => {
   return (
@@ -17,11 +18,13 @@ const App: React.FC<{}> = () => {
               <li><a href="#services">Serviços</a></li>
               <li><a href="#contact">Contato</a></li>
               <li id="login"><Link to="/login">Login</Link></li>
+              <li id="signin-gestor"><Link to="/signin-gestor">Cadastro</Link></li>
             </ul>
           </nav>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signin-gestor" element={<SignInGestorPage />} />
         </Routes>
       </BrowserRouter>
     </>
