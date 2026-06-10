@@ -1,34 +1,63 @@
 import requests
 import unicodedata
-#usando o inspector, descobri que o TJERJ tem um endpoint HTTP utilizado pelo front-end público do site que é usada para buscar processos. A URL é a seguinte:
+from abc import ABC, abstractmethod
+
 API_URL = "https://www3.tjrj.jus.br/consultaprocessual/api/processos"
 
-def normalizar_nome(texto: str) -> str:
+
+def normalizar_texto(texto: str) -> str:
     if not texto:
         return ""
-
     texto = texto.strip()
     texto = texto.strip("{}")
     texto = unicodedata.normalize("NFKD", texto)
     texto = "".join(c for c in texto if not unicodedata.combining(c))
     return " ".join(texto.casefold().split())
 
-def filtraPorNomeExato(nome_busca: str, processos: list) -> list:
-    nome_normalizado = normalizar_nome(nome_busca)
-    resultados_filtrados = []
+def contem_indicacao_falecido(texto: str) -> bool:
+    texto_normalizado = normalizar_texto(texto)
+    indicadores = [
+        "falecido",
+        "falecida"
+    ]
+    return any(indicador in texto_normalizado for indicador in indicadores)
 
-    for processo in processos:
-        personagens = processo.get("personagensResumido", [])
+#region Mini strategy para filtragem
+class FiltroProcesso(ABC):
+    @abstractmethod
+    def aceitar(self, processo: dict) -> bool:
+        pass
 
-        for personagem in personagens:
-            nome_personagem = personagem.get("nome")
+    def filtrar(self, processos: list) -> list:
+        return [processo for processo in processos if self.aceitar(processo)]
 
-            if nome_personagem and normalizar_nome(nome_personagem) == nome_normalizado:
-                resultados_filtrados.append(processo)
-                break
 
-    return resultados_filtrados
+class FiltroNomeReuVivo(FiltroProcesso):
+    def __init__(self, nome_busca: str):
+        self.nome_busca = normalizar_texto(nome_busca)
 
+    def aceitar(self, processo: dict) -> bool:
+        nome_reu = normalizar_texto(processo.get("nomeReu", ""))
+        if nome_reu != self.nome_busca:
+            return False
+
+        if contem_indicacao_falecido(processo.get("nomeReu", "")):
+            return False
+
+        return True
+
+
+class FiltroCpfReuVivo(FiltroProcesso):
+    def aceitar(self, processo: dict) -> bool:
+        nome_reu = processo.get("nomeReu", "")
+        if not nome_reu:
+            return False
+
+        if contem_indicacao_falecido(nome_reu):
+            return False
+
+        return True
+#endregion
 
 def buscar_processos_por_nome(nome: str):
     payload = {
@@ -60,8 +89,11 @@ def buscar_processos_por_nome(nome: str):
         )
         response.raise_for_status()
         resultado = response.json()
+
         if isinstance(resultado, list):
-            return filtraPorNomeExato(nome, resultado)
+            filtro = FiltroNomeReuVivo(nome)
+            return filtro.filtrar(resultado)
+
         return resultado
 
     except requests.RequestException as e:
@@ -97,6 +129,13 @@ def buscar_processos_por_cpf(cpf: str):
             timeout=30
         )
         response.raise_for_status()
-        return response.json()
+        resultado = response.json()
+
+        if isinstance(resultado, list):
+            filtro = FiltroCpfReuVivo()
+            return filtro.filtrar(resultado)
+
+        return resultado
+
     except requests.RequestException as e:
         return {"erro": "Falha ao consultar TJERJ", "detalhe": str(e)}
