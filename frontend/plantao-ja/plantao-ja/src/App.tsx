@@ -6,12 +6,12 @@ import SignInGestorPage from './pages/SignInGestorPage';
 import SignInMedicoPage from './pages/SignInMedicoPage';
 import PrivateRoute from './pages/PrivateRoute';
 import DashboardPage from './pages/DashboardPage';
+import SignInHospitalPage from './pages/SignInHospitalPage';
 import './App.css'
 
 const App: React.FC<{}> = () => {
   return (
     <>
-    
       <BrowserRouter>
         {/* Navigation Bar */}
           <nav className="navbar">
@@ -27,7 +27,6 @@ const App: React.FC<{}> = () => {
                   <li id="signin-médico"><Link to="/signin-médico" className="dp-link"><img src="./src/assets/medical-assistance.png" alt=""/>Médico</Link></li>
                 </ul>
               </li>
-              
             </ul>
           </nav>
         <Routes>
@@ -35,6 +34,7 @@ const App: React.FC<{}> = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signin-gestor" element={<SignInGestorPage />} />
           <Route path="/signin-médico" element={<SignInMedicoPage />} />
+          <Route path="/signin-hospital" element={<SignInHospitalPage/>} />
           <Route path="/dashboard" element={<PrivateRoute><DashboardPage/></PrivateRoute>}/>
         </Routes>
       </BrowserRouter>

@@ -1,3 +1,52 @@
 {
-    "hospital":[]
+  "hospital": [
+    {
+      "nome": "Rede D'OR UFF",
+      "gestorId": 1,
+      "cnpj": "28.523.215/0001-06",
+      "endereco": {
+        "cep": "24210-240",
+        "rua": "Rua Passo da Pátria",
+        "numero": "156",
+        "cidade": "Niterói",
+        "estado": "RJ",
+        "complemento": "Em frente a Baía de Guanabara"
+      },
+      "statusCadastro": true,
+      "nota": null,
+      "id": 1
+    },
+    {
+      "nome": "Rede D'OR UFF",
+      "gestorId": 1,
+      "cnpj": "28.523.215/0001-06",
+      "endereco": {
+        "cep": "24210-240",
+        "rua": "Rua Passo da Pátria",
+        "numero": "156",
+        "cidade": "Niterói",
+        "estado": "RJ",
+        "complemento": "Em frente a Baía de Guanabara"
+      },
+      "statusCadastro": true,
+      "nota": null,
+      "id": 2
+    },
+    {
+      "nome": "Rede D'OR UFF",
+      "gestorId": 1,
+      "cnpj": "28.523.215/0001-06",
+      "endereco": {
+        "cep": "24210-240",
+        "rua": "Rua Passo da Pátria",
+        "numero": "156",
+        "cidade": "Niterói",
+        "estado": "RJ",
+        "complemento": "Em frente a Baía de Guanabara"
+      },
+      "statusCadastro": true,
+      "nota": null,
+      "id": 3
+    }
+  ]
 }

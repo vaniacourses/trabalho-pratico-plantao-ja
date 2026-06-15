@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+
+
 const DashboardPage = () => {
 
     const user = JSON.parse(
@@ -8,13 +11,15 @@ const DashboardPage = () => {
         <>
             <h1>Bem-vindo {user.nome}</h1>
 
-            <p>
-                Cadastrar Hospital
-            </p>
+            
+                <p>
+                    <Link to="/signin-hospital">Cadastrar Hospital</Link>
+                </p>
 
-            <p>
-                Cadastrar Plantão
-            </p>
+                <p>
+                    Cadastrar Plantão
+                </p>
+
         </>
     );
 };
