@@ -1,36 +1,79 @@
 import React, { useState } from  "react";
+import {useNavigate} from "react-router-dom";
 import './LoginPage.css'
 
 interface LoginPageProps {
     title?: string;
 }
 
-const url = "http://localhost:5001/gestor"
+const urlGestor = "http://localhost:5001/gestor"
+const urlMedico = "http://localhost:5001/medico"
 
 const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
-    const [nome, setNome] = useState(""); //1.Define o estado
+    const navigate = useNavigate() 
+    const [option, setOption] = useState("Login-Gestor")
+    const [email, setEmail] = useState(""); //1.Define o estado
     const [password, setPassword] = useState("")
-    const [status, setStatus] = useState("");   
-    const handleSubmit = async (e: React.SubmitEvent) => {
+    const [status, setStatus] = useState("");  
+
+    const handleLoginGestor = async (e: React.SubmitEvent) => {
         e.preventDefault(); // Impede a página de recarregar e quebrar o React
-        const gestor = { nome, password }
-        console.log(nome, password)
+        console.log(email, password)
         // Aqui você faz a chamada de login ou usa o React Router
         setStatus("Submitting...");
 
         try {
-        const response = await fetch(url, {
+        const response = await fetch(urlGestor+"${email}");
+
+        if (response.ok) {
+            const gestores = await response.json()
+            const gestor = gestores[0];
+
+            if (!gestor) {
+                alert("Usuário não encontrado");
+                return;
+            }
+
+            if (gestor.password !== password) {
+                alert("Senha inválida");
+                return;
+            }
+
+            localStorage.setItem(
+            "user",
+            JSON.stringify(gestor)
+            );
+
+            navigate("/dashboard");
+        } else {
+            setStatus("Submission failed. Server returned an error.");
+        }
+        } catch (error) {
+            console.error("Connection error:", error);
+            setStatus("Could not connect to the backend server.");
+        }
+    };
+
+    const handleLoginMedico = async (e: React.SubmitEvent) => {
+        e.preventDefault(); // Impede a página de recarregar e quebrar o React
+        const medico = { email, password }
+        console.log(email, password)
+        // Aqui você faz a chamada de login ou usa o React Router
+        setStatus("Submitting...");
+
+        try {
+        const response = await fetch(urlMedico, {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
             },
-            body: JSON.stringify(gestor),
+            body: JSON.stringify(medico),
         });
 
         if (response.ok) {
             const data = await response.json();
             setStatus(`Success: ${data.message}`);
-            setNome(''); 
+            setEmail(''); 
             setPassword("");// Clear form
         } else {
             setStatus("Submission failed. Server returned an error.");
@@ -40,21 +83,46 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
             setStatus("Could not connect to the backend server.");
         }
     };
+
+    const handleOption = async (e: React.SubmitEvent) => {
+        e.preventDefault()
+        if (option==="Login-Gestor") {
+            setOption("Login-Medico")
+        }
+        else {
+            setOption("Login-Gestor")
+        }
+        console.log(option)
+    }
+
     return (
         <>
             <header>
                 <h1>{title}</h1>
             </header>
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <input type="text" name="nome" placeholder="Usuário" id="user-id" value={nome} 
-                    onChange={(e) => setNome(e.target.value)}/>
+            <form onSubmit={handleOption}>
+                <input type="submit" name="login-gestor" value={option}/>
+            </form>
+            {option==="Login-Gestor" && <div id="login-gestor">
+                <form onSubmit={handleLoginGestor}>
+                    <input type="email" name="email" placeholder="Seu email de gestor" id="email" value={email} 
+                    onChange={(e) => setEmail(e.target.value)}/>
                     <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
                     onChange={(e) => setPassword(e.target.value)}/>
-                    <button type='submit'>Submit Form</button>
+                    <button type='submit'>Login</button>
                 </form>
                 {status && <p>{status}</p>}
-            </div>
+            </div>}
+            {option==="Login-Medico" && <div id="login-medico">
+                <form onSubmit={handleLoginMedico}>
+                    <input type="email" name="email" placeholder="Seu email de medico" id="email" value={email} 
+                    onChange={(e) => setEmail(e.target.value)}/>
+                    <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
+                    onChange={(e) => setPassword(e.target.value)}/>
+                    <button type='submit'>Login</button>
+                </form>
+                {status && <p>{status}</p>}
+            </div>}
         </>
     );
 };

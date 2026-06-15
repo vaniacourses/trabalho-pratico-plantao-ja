@@ -10,18 +10,25 @@ body {
     width: 100%;
 }
 
+header h1 {
+    margin: 1rem 45%;
+    padding: 1rem;
+}
+
 form {
     display: flex;
+    align-items: center;
     flex-direction: column;
-    justify-content: space-around;
-    margin: 0 auto;
-    width: 30%;
+    margin: 2 auto;
+    width: 40%;
 }
 
 form input {
-    padding: .3rem;
+    padding: .4rem;
     background-color: #000;
     border: 1px solid #bbb;
+    margin: 0 auto;
+    width: 40%; 
 }
 
 form input[type="text"]:focus, form input[type="password"]:focus {
@@ -29,7 +36,7 @@ form input[type="text"]:focus, form input[type="password"]:focus {
 }
 
 form input, button {
-    margin: 1rem 0rem 0rem 1rem;
+    margin: 1rem auto;
 }
 
 form button {
