@@ -11,7 +11,7 @@ const urlMedico = "http://localhost:5001/medico"
 
 const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
     const navigate = useNavigate() 
-    const [option, setOption] = useState("Login-Gestor")
+    const [option, setOption] = useState("Login para Gestor")
     const [email, setEmail] = useState(""); //1.Define o estado
     const [password, setPassword] = useState("")
     const [status, setStatus] = useState("");  
@@ -86,11 +86,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
 
     const handleOption = async (e: React.SubmitEvent) => {
         e.preventDefault()
-        if (option==="Login-Gestor") {
-            setOption("Login-Medico")
+        if (option==="Login para Gestor") {
+            setOption("Login para Medico")
         }
         else {
-            setOption("Login-Gestor")
+            setOption("Login para Gestor")
         }
         console.log(option)
     }
@@ -103,20 +103,24 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
             <form onSubmit={handleOption}>
                 <input type="submit" name="login-gestor" value={option}/>
             </form>
-            {option==="Login-Gestor" && <div id="login-gestor">
+            {option!=="Login para Gestor" && <div id="login-gestor">
                 <form onSubmit={handleLoginGestor}>
+                    <p>Digite o seu Email:</p>
                     <input type="email" name="email" placeholder="Seu email de gestor" id="email" value={email} 
                     onChange={(e) => setEmail(e.target.value)}/>
+                    <p>Digite a sua Senha:</p>
                     <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
                     onChange={(e) => setPassword(e.target.value)}/>
                     <button type='submit'>Login</button>
                 </form>
                 {status && <p>{status}</p>}
             </div>}
-            {option==="Login-Medico" && <div id="login-medico">
+            {option!=="Login para Medico" && <div id="login-medico">
                 <form onSubmit={handleLoginMedico}>
+                    <p>Digite o seu Email:</p>
                     <input type="email" name="email" placeholder="Seu email de medico" id="email" value={email} 
                     onChange={(e) => setEmail(e.target.value)}/>
+                    <p>Digite a sua Senha:</p>
                     <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
                     onChange={(e) => setPassword(e.target.value)}/>
                     <button type='submit'>Login</button>
