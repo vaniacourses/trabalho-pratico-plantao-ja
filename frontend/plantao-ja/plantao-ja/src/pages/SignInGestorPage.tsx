@@ -7,7 +7,7 @@ interface SignInGestorPageProps {
 
 const url = "http://localhost:5001/gestor"
 
-const SignInGestorPage: React.FC<SignInGestorPageProps> = ({title = "Sign In - Gestor"}) => {
+const SignInGestorPage: React.FC<SignInGestorPageProps> = ({title = "Cadastro de Gestor"}) => {
 
     const [nome, setNome] = useState(""); //1.Define o estado
     const [password, setPassword] = useState("")
