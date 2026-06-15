@@ -10,6 +10,8 @@ import './App.css'
 
 const App: React.FC<{}> = () => {
   return (
+    <>
+    
       <BrowserRouter>
         {/* Navigation Bar */}
           <nav className="navbar">
@@ -22,8 +24,8 @@ const App: React.FC<{}> = () => {
               <li id="login"><Link to="/login">Login</Link></li>
               <li className='dropdown-li'><a className="dropdown">Primeiro Aceso</a>
                 <ul className="dropdown-content">
-                  <li id="signin-gestor"><Link to="/signin-gestor" className="dp-link">Cadastro - Gestor</Link></li>
-                  <li id="signin-médico"><Link to="/signin-médico" className="dp-link">Cadastro - Médico</Link></li>
+                  <li id="signin-gestor"><Link to="/signin-gestor" className="dp-link">Gestor</Link></li>
+                  <li id="signin-médico"><Link to="/signin-médico" className="dp-link">Médico</Link></li>
                 </ul>
               </li>
               
@@ -37,6 +39,14 @@ const App: React.FC<{}> = () => {
           <Route path="/dashboard" element={<PrivateRoute><DashboardPage/></PrivateRoute>}/>
         </Routes>
       </BrowserRouter>
+      <footer>
+        <section><p>© 2026 Plantao Ja Todos os direitos reservados</p></section>
+        <section>
+            <a href="http://www.instagram.com"><img src="./src/assets/Instagram_Glyph_Gradient.png"></img></a>
+            <a href="http://www.x.com"><img src="./src/assets/logo-black.png"></img></a>
+        </section>
+      </footer>
+    </>
   );
 };
 

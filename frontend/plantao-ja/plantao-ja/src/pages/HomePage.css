@@ -1,3 +1,16 @@
 ul {
   list-style-type: none;
 }
+
+footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  bottom: 0;
+  position: fixed;
+}
+
+footer a img {
+  width: 1.6rem;
+}
