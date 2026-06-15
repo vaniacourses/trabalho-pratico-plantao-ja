@@ -3,7 +3,7 @@ spring:
     name: plantao-ja-usuario-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/plantao_ja?useTimezone=true&serverTimezone=UTC
+    url: jdbc:mysql://mysql:3306/plantao_ja?useTimezone=true&serverTimezone=UTC
     username: root
     password: password
   jpa:
