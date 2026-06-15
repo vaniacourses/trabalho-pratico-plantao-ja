@@ -100,9 +100,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
             <header>
                 <h1>{title}</h1>
             </header>
-            <form onSubmit={handleOption}>
-                <input type="submit" name="login-gestor" value={option}/>
-            </form>
             {option!=="Login para Gestor" && <div id="login-gestor">
                 <form onSubmit={handleLoginGestor}>
                     <p>Digite o seu Email:</p>
@@ -127,6 +124,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
                 </form>
                 {status && <p>{status}</p>}
             </div>}
+            <form onSubmit={handleOption}>
+                <input type="submit" name="login-gestor" value={option}/>
+            </form>
         </>
     );
 };

@@ -7,7 +7,7 @@ interface SignInMedicoPageProps {
 
 const url = "http://localhost:5003/medico"
 
-const SignInMedicoPage: React.FC<SignInMedicoPageProps> = ({title = "Sign In - Medico"}) => {
+const SignInMedicoPage: React.FC<SignInMedicoPageProps> = ({title = "Cadastro de Medico"}) => {
 
     const [nome, setNome] = useState(""); //1.Define o estado
     const [password, setPassword] = useState("")
