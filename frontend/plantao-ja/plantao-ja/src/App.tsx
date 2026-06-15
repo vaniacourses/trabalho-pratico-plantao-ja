@@ -20,8 +20,13 @@ const App: React.FC<{}> = () => {
               <li><a href="#services">Serviços</a></li>
               <li><a href="#contact">Contato</a></li>
               <li id="login"><Link to="/login">Login</Link></li>
-              <li id="signin-gestor"><Link to="/signin-gestor">Cadastro - Gestor</Link></li>
-              <li id="signin-médico"><Link to="/signin-médico">Cadastro - Médico</Link></li>
+              <li className='dropdown-li'><a className="dropdown">Primeiro Aceso</a>
+                <ul className="dropdown-content">
+                  <li id="signin-gestor"><Link to="/signin-gestor" className="dp-link">Cadastro - Gestor</Link></li>
+                  <li id="signin-médico"><Link to="/signin-médico" className="dp-link">Cadastro - Médico</Link></li>
+                </ul>
+              </li>
+              
             </ul>
           </nav>
         <Routes>
