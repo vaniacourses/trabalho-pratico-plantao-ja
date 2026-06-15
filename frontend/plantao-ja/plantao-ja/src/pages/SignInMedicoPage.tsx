@@ -1,37 +1,37 @@
 import React, { useState } from  "react";
-import './SignInGestorPage.css'
+import './SignInMedicoPage.css'
 
-interface SignInGestorPageProps {
+interface SignInMedicoPageProps {
     title?: string;
 }
 
-const url = "http://localhost:5001/gestor"
+const url = "http://localhost:5003/medico"
 
-const SignInGestorPage: React.FC<SignInGestorPageProps> = ({title = "Sign In - Gestor"}) => {
+const SignInMedicoPage: React.FC<SignInMedicoPageProps> = ({title = "Sign In - Medico"}) => {
 
     const [nome, setNome] = useState(""); //1.Define o estado
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const [status] = useState(true)
-    const [cargo, setCargo] = useState("")
+    const [especialidade, setEspecialidade] = useState("")
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault()
         status: true
-        const gestor = { nome, password, email, status, cargo}
+        const medico = { nome, password, email, status, especialidade}
         try {
             const response = await fetch ( url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(gestor)
+                body: JSON.stringify(medico)
             })
             await response.json();
             setNome("")
             setPassword("")
             setEmail("")
-            setCargo("")
+            setEspecialidade("")
         } catch(error) {
             console.error("Connection error:", error);
         }
@@ -46,8 +46,8 @@ const SignInGestorPage: React.FC<SignInGestorPageProps> = ({title = "Sign In - G
                     onChange={(e) => setNome(e.target.value)}/>
                     <input type="email" name="email" placeholder="seu_email@exemplo.com" id="email" value={email} 
                     onChange={(e) => setEmail(e.target.value)}/>
-                    <input type="text" name="cargo" placeholder="Seu cargo no hospital" id="cargo" value={cargo} 
-                    onChange={(e) => setCargo(e.target.value)}/>
+                    <input type="text" name="especialidade" placeholder="Sua especialidade" id="especialidade" value={especialidade} 
+                    onChange={(e) => setEspecialidade(e.target.value)}/>
                     <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
                     onChange={(e) => setPassword(e.target.value)}/>
                     <button type='submit'>Cadastrar</button>
@@ -57,4 +57,4 @@ const SignInGestorPage: React.FC<SignInGestorPageProps> = ({title = "Sign In - G
     )
 }
 
-export default SignInGestorPage
+export default SignInMedicoPage
