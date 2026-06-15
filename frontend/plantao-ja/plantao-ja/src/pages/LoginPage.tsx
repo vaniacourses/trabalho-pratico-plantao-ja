@@ -18,19 +18,19 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
 
     const handleLoginGestor = async (e: React.SubmitEvent) => {
         e.preventDefault(); // Impede a página de recarregar e quebrar o React
-        console.log(email, password)
         // Aqui você faz a chamada de login ou usa o React Router
         setStatus("Submitting...");
 
         try {
-        const response = await fetch(urlGestor+"${email}");
+        const response = await fetch(`${urlGestor}?email=${email}`);
 
         if (response.ok) {
             const gestores = await response.json()
             const gestor = gestores[0];
-
+            console.log(gestores[0])
             if (!gestor) {
                 alert("Usuário não encontrado");
+                setStatus("");
                 return;
             }
 
@@ -92,7 +92,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
         else {
             setOption("Login para Gestor")
         }
-        console.log(option)
     }
 
     return (
