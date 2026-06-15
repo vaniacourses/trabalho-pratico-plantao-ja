@@ -1,0 +1,62 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: plantao_ja
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  usuario-service:
+    build: ./backend/plantao-ja-usuario-service
+    container_name: usuario-service
+    ports:
+      - "8081:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  hospital-service:
+    build: ./backend/plantao-ja-hospital-service
+    container_name: hospital-service
+    ports:
+      - "8082:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  scraping-service:
+    build: ./backend/plantao-ja-scraping-service
+    container_name: scraping-service
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend/plantao-ja/plantao-ja
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - usuario-service
+      - hospital-service
+      - scraping-service
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge  
