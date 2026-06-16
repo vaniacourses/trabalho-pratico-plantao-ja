@@ -1,0 +1,110 @@
+/* ── Reset ───────────────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ── Page ────────────────────────────────────────────── */
+.signin-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8f8f6 0%, #f0fafa 60%, #d4f0ec 100%);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── Card ────────────────────────────────────────────── */
+.signin-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 2.5rem 2.8rem 2rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 40px rgba(5, 173, 152, 0.10), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* ── Header ──────────────────────────────────────────── */
+.signin-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.signin-icon {
+    font-size: 2rem;
+}
+
+.signin-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f2f2b;
+    margin-top: 0.3rem;
+    letter-spacing: -0.02em;
+}
+
+.signin-subtitle {
+    font-size: 0.78rem;
+    color: #7fa8a2;
+    margin-top: 0.25rem;
+}
+
+/* ── Inputs ──────────────────────────────────────────── */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.1rem;
+}
+
+.input-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4a7570;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.input-group input {
+    border: none;
+    border-bottom: 2px solid #d0e8e5;
+    border-radius: 0;
+    padding: 0.55rem 0.2rem;
+    font-size: 0.95rem;
+    color: #1a3330;
+    background: transparent;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-bottom-color: #05ad98;
+}
+
+.input-group input::placeholder {
+    color: #b0ccc9;
+}
+
+/* ── Button ──────────────────────────────────────────── */
+.signin-btn {
+    width: 100%;
+    margin-top: 1.4rem;
+    padding: 0.85rem;
+    background: #05ad98;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.signin-btn:hover {
+    background: #049e8b;
+}
+
+.signin-btn:active {
+    transform: scale(0.98);
+}

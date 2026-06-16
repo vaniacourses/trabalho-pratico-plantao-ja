@@ -17,7 +17,6 @@ const SignInGestorPage: React.FC<SignInGestorPageProps> = ({title = "Cadastro de
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault()
-        status: true
         const gestor = { nome, password, email, status, cargo}
         try {
             const response = await fetch ( url, {
@@ -38,19 +37,35 @@ const SignInGestorPage: React.FC<SignInGestorPageProps> = ({title = "Cadastro de
     } 
 
     return (
-        <div id="root">
-            <h1>{title}</h1>
-            <div className="signin-box">
+        <div className="signin-page">
+            <div className="signin-card">
+                <div className="signin-header">
+                    <span className="signin-icon">🏥</span>
+                    <h1>{title}</h1>
+                    <p className="signin-subtitle">Preencha os dados para criar seu acesso</p>
+                </div>
                 <form onSubmit={handleSubmit}>
-                    <input type="text" name="nome" placeholder="Usuário" id="user-id" value={nome} 
-                    onChange={(e) => setNome(e.target.value)}/>
-                    <input type="email" name="email" placeholder="seu_email@exemplo.com" id="email" value={email} 
-                    onChange={(e) => setEmail(e.target.value)}/>
-                    <input type="text" name="cargo" placeholder="Seu cargo no hospital" id="cargo" value={cargo} 
-                    onChange={(e) => setCargo(e.target.value)}/>
-                    <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
-                    onChange={(e) => setPassword(e.target.value)}/>
-                    <button type='submit'>Cadastrar</button>
+                    <div className="input-group">
+                        <label htmlFor="nome">Nome completo</label>
+                        <input type="text" id="nome" name="nome" placeholder="Maria Souza" value={nome}
+                            onChange={(e) => setNome(e.target.value)} />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="gestor@hospital.com" value={email}
+                            onChange={(e) => setEmail(e.target.value)} />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="cargo">Cargo</label>
+                        <input type="text" id="cargo" name="cargo" placeholder="ex: Diretor Administrativo" value={cargo}
+                            onChange={(e) => setCargo(e.target.value)} />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="password">Senha</label>
+                        <input type="password" id="password" name="senha" placeholder="••••••••" value={password}
+                            onChange={(e) => setPassword(e.target.value)} />
+                    </div>
+                    <button className="signin-btn" type="submit">Cadastrar</button>
                 </form>
             </div>
         </div>

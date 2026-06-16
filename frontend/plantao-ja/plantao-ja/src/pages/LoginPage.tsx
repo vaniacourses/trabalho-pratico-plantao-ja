@@ -7,19 +7,18 @@ interface LoginPageProps {
 }
 
 const urlGestor = "http://localhost:5001/gestor"
-const urlMedico = "http://localhost:5001/medico"
+const urlMedico = "http://localhost:5003/medico"
 
 const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
     const navigate = useNavigate() 
     const [option, setOption] = useState("Login para Gestor")
-    const [email, setEmail] = useState(""); //1.Define o estado
+    const [email, setEmail] = useState(""); 
     const [password, setPassword] = useState("")
     const [status, setStatus] = useState("");  
 
     const handleLoginGestor = async (e: React.SubmitEvent) => {
-        e.preventDefault(); // Impede a página de recarregar e quebrar o React
-        // Aqui você faz a chamada de login ou usa o React Router
-        setStatus("Submitting...");
+        e.preventDefault();
+        setStatus("Verificando...");
 
         try {
         const response = await fetch(`${urlGestor}?email=${email}`);
@@ -38,7 +37,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
                 alert("Senha inválida");
                 return;
             }
-
             localStorage.setItem(
             "user",
             JSON.stringify(gestor)
@@ -56,23 +54,27 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
 
     const handleLoginMedico = async (e: React.SubmitEvent) => {
         e.preventDefault(); // Impede a página de recarregar e quebrar o React
-        const medico = { email, password }
-        console.log(email, password)
         // Aqui você faz a chamada de login ou usa o React Router
-        setStatus("Submitting...");
+        setStatus("Verificando...");
 
         try {
-        const response = await fetch(urlMedico, {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify(medico),
-        });
+        const response = await fetch(`${urlMedico}?email=${email}`);
 
         if (response.ok) {
             const data = await response.json();
-            setStatus(`Success: ${data.message}`);
+            if(!data) {
+                alert("Médico não cadastrado!")
+                setStatus("");
+                return;
+            }
+
+            if (data.password !== password) {
+                alert("Senha inválida!")
+                return;
+            }
+
+            localStorage.setItem("user",JSON.stringify(data));
+            setStatus(`Successo: ${data.message}`);
             setEmail(''); 
             setPassword("");// Clear form
         } else {
@@ -84,49 +86,62 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
         }
     };
 
-    const handleOption = async (e: React.SubmitEvent) => {
+    const handleOption = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        if (option==="Login para Gestor") {
-            setOption("Login para Medico")
-        }
-        else {
-            setOption("Login para Gestor")
-        }
+        setOption(prev => prev === "Login para Gestor" ? "Login para Medico" : "Login para Gestor")
+        setEmail("")
+        setPassword("")
+        setStatus("")
     }
 
+    const isGestor = option === "Login para Gestor"
+
     return (
-        <>
-            <header>
-                <h1>{title}</h1>
-            </header>
-            {option!=="Login para Gestor" && <div id="login-gestor">
-                <form onSubmit={handleLoginGestor}>
-                    <p>Digite o seu Email:</p>
-                    <input type="email" name="email" placeholder="Seu email de gestor" id="email" value={email} 
-                    onChange={(e) => setEmail(e.target.value)}/>
-                    <p>Digite a sua Senha:</p>
-                    <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
-                    onChange={(e) => setPassword(e.target.value)}/>
-                    <button type='submit'>Login</button>
-                </form>
-                {status && <p>{status}</p>}
-            </div>}
-            {option!=="Login para Medico" && <div id="login-medico">
-                <form onSubmit={handleLoginMedico}>
-                    <p>Digite o seu Email:</p>
-                    <input type="email" name="email" placeholder="Seu email de medico" id="email" value={email} 
-                    onChange={(e) => setEmail(e.target.value)}/>
-                    <p>Digite a sua Senha:</p>
-                    <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
-                    onChange={(e) => setPassword(e.target.value)}/>
-                    <button type='submit'>Login</button>
-                </form>
-                {status && <p>{status}</p>}
-            </div>}
-            <form onSubmit={handleOption}>
-                <input type="submit" name="login-gestor" value={option}/>
-            </form>
-        </>
+        <div className="login-page">
+            <div className="login-card">
+                <header>
+                    <span className="login-brand-icon">🏥</span>
+                    <h1>{title}</h1>
+                    <p className="login-subtitle">Sistema de Gestão Hospitalar</p>
+                </header>
+
+                <div className="login-tabs">
+
+                    <button className={`login-tab ${isGestor ? "active" : ""}`} onClick={handleOption}> 
+                        {option}
+                    </button>
+                </div>
+                {isGestor ? (
+                    <form onSubmit={handleLoginGestor}>
+                        <div id="login-gestor" className="input-group">
+                            <p>Digite o seu Email:</p>
+                            <input type="email" name="email" placeholder="Seu email de gestor" id="email" value={email} 
+                            onChange={(e) => setEmail(e.target.value)}/>
+                        </div>
+                        <div id="login-gestor" className="input-group">
+                            <p>Digite a sua Senha:</p>
+                        <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
+                        onChange={(e) => setPassword(e.target.value)}/>
+                        </div>
+                        <button className="login-btn" type='submit'>Entrar</button>
+                    </form>) : (
+                    <form onSubmit={handleLoginMedico}>
+                        <div id="login-medico" className="input-group">
+                            <p>Digite o seu Email:</p>
+                            <input type="email" name="email" placeholder="douto@gmail.com" id="email" value={email} 
+                            onChange={(e) => setEmail(e.target.value)}/>
+                        </div>
+                        <div id="login-medico" className="input-group">
+                            <p>Digite a sua Senha:</p>
+                            <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
+                            onChange={(e) => setPassword(e.target.value)}/>
+                        </div>
+                        <button type='submit' className="login-btn">Entrar</button>
+                    </form>
+                    )}
+                {status && <p className="login-status">{status}</p>}
+            </div>
+        </div>
     );
 };
 

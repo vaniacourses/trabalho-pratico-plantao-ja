@@ -1,1 +1,129 @@
+.home-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: var(--sans);
+}
 
+/* Hero Section (Lado a Lado) */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  min-height: calc(80vh - 7rem);
+  padding: 2rem 0;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 600px;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 0.8rem 1.8rem;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: #05ad98;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #048c7b;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #05ad98;
+  border: 2px solid #05ad98;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(5, 173, 152, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Imagem do Hero */
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  object-fit: cover;
+}
+
+/* Outras Seções de Conteúdo */
+.info-section {
+  padding: 4rem 2rem;
+  margin: 2rem 0;
+  border-radius: 8px;
+}
+
+.alternate-bg {
+  background-color: var(--code-bg);
+}
+
+.section-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.section-content h2 {
+  margin-bottom: 1rem;
+  color: var(--text-h);
+}
+
+.section-content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Dá um espaço extra no fim para o seu footer fixed não cobrir o conteúdo */
+.contact-footer-spacing {
+  margin-bottom: 8rem; 
+}
+
+/* Responsividade para telas menores (Celular/Tablet) */
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .hero-image img {
+    max-width: 100%;
+  }
+}

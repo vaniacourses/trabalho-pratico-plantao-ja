@@ -1,80 +1,153 @@
-* {
+/* ── Reset ───────────────────────────────────────────── */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    margin: 0 auto;
-    padding: 0;
-    width: 100%;
-}
-
-header h1 {
-    margin: 1rem 45%;
-    padding: 1rem;
-    color: #333;
-}
-
-form {
+/* ── Page ────────────────────────────────────────────── */
+.login-page {
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    flex-direction: column;
-    margin: 2 auto;
-    width: 40%;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8f8f6 0%, #f0fafa 60%, #d4f0ec 100%);
+    font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-form input[type="submit"] {
-    width: 30%;
+/* ── Card ────────────────────────────────────────────── */
+.login-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 2.5rem 2.8rem 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 8px 40px rgba(5, 173, 152, 0.10), 0 2px 8px rgba(0,0,0,0.06);
 }
 
-form input[type="submit"]:hover {
-    background-color: #05ad98;
-    font-weight: bold;
+/* ── Brand ───────────────────────────────────────────── */
+.login-brand {
+    text-align: center;
+    margin-bottom: 1.8rem;
 }
 
-#login-gestor, #login-medico {
-    border: 1px solid #111;
-    border-radius: 15px;
-    width: 30%;
-    margin: 0 auto;
-    background-color: #bbbfbf;
-    padding: 1rem;
-    color: #333;
-    font-weight: bold;
+.login-brand-icon {
+    font-size: 2rem;
 }
 
-form input {
-    padding: .5rem .3rem;
-    background-color: #fff;
-    border: 1px solid #bbb;
-    margin: .5rem auto;
-    width: 80%; 
-    color: #111;
+.login-brand h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #0f2f2b;
+    margin-top: 0.3rem;
+    letter-spacing: -0.02em;
+}
+
+.login-subtitle {
+    font-size: 0.78rem;
+    color: #7fa8a2;
+    margin-top: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* ── Tabs ────────────────────────────────────────────── */
+.login-tabs {
+    display: flex;
     border-radius: 10px;
-    font-size: .8rem;
+    background: #f0f4f4;
+    padding: 4px;
+    margin-bottom: 1.8rem;
+    gap: 4px;
 }
 
-form input[type="text"]:focus, form input[type="password"]:focus {
+.login-tab {
+    flex: 1;
+    padding: 0.55rem 0;
     border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: #7fa8a2;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
 }
 
-form input, button {
-    margin: 1rem auto;
+.login-tab.active {
+    background: #ffffff;
+    color: #05ad98;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.10);
 }
 
-form button {
-    background-color: rgb(5, 173, 153);
-    color: #fff;
-    margin: 0 auto 1rem;
-    padding: 1rem;
-    text-decoration: none;
+.login-tab:hover:not(.active) {
+    color: #05ad98;
+}
+
+/* ── Inputs ──────────────────────────────────────────── */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.1rem;
+}
+
+.input-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4a7570;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.input-group input {
     border: none;
-    font-weight: bold;
-    font-size: .9rem;
-    border-radius: 5px;
+    border-bottom: 2px solid #d0e8e5;
+    border-radius: 0;
+    padding: 0.55rem 0.2rem;
+    font-size: 0.95rem;
+    color: #1a3330;
+    background: transparent;
+    outline: none;
+    transition: border-color 0.2s;
 }
-button:hover{
+
+.input-group input:focus {
+    border-bottom-color: #05ad98;
+}
+
+.input-group input::placeholder {
+    color: #b0ccc9;
+}
+
+/* ── Submit button ───────────────────────────────────── */
+.login-btn {
+    width: 100%;
+    margin-top: 1.4rem;
+    padding: 0.85rem;
+    background: #05ad98;
     color: #fff;
-    background-color: rgb(4, 136, 121);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.login-btn:hover {
+    background: #049e8b;
+}
+
+.login-btn:active {
+    transform: scale(0.98);
+}
+
+/* ── Status message ──────────────────────────────────── */
+.login-status {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: #4a7570;
 }
