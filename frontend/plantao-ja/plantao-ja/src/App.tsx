@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
+import HospitaisTestPage from './pages/HospitaisPage';
 import './App.css'
 
 const App: React.FC<{}> = () => {
@@ -22,6 +23,7 @@ const App: React.FC<{}> = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/hospitais" element={<HospitaisTestPage />} />
         </Routes>
       </BrowserRouter>
     </>
