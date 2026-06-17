@@ -21,7 +21,7 @@ public class Endereco {
     @NonNull
     private String rua;
 
-    private Long numero;
+    private int numero;
 
     private String complemento;
 }
