@@ -1,3 +1,12 @@
 {
-    "medico":[]
+  "medico": [
+    {
+      "nome": "Jair Messis Bolsonaro",
+      "password": "covid2019",
+      "email": "bolsonaro@br.com",
+      "status": true,
+      "especialidade": "Virologista",
+      "id": 1
+    }
+  ]
 }

@@ -1,0 +1,254 @@
+/* ── Container de Fundo (Centralizado) ───────────────────────── */
+.cadastro-plantao-container {
+    min-height: calc(100vh - 80px); /* Ajusta descontando uma barra de navegação média */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8f8f6 0%, #f0fafa 60%, #d4f0ec 100%);
+    padding: 2rem 1rem;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── Card Principal do Formulário ─────────────────────────── */
+.cadastro-plantao-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 2.5rem 3rem;
+    width: 100%;
+    max-width: 750px;
+    box-shadow: 0 10px 30px rgba(5, 173, 152, 0.08), 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.cadastro-plantao-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.cadastro-plantao-header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #0f2f2b;
+    margin-bottom: 0.4rem;
+}
+
+.cadastro-plantao-header p {
+    font-size: 0.9rem;
+    color: #7fa8a2;
+}
+
+/* ── Estrutura de inputs e Labels ───────────────────────── */
+.cadastro-plantao-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.plantao-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.plantao-form-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #4a7570;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.plantao-form-group select,
+.plantao-form-group input[type="datetime-local"] {
+    padding: 0.75rem 1rem;
+    border: 1px solid #d0e8e5;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #1a3330;
+    background-color: #fafdfd;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.plantao-form-group select:focus,
+.plantao-form-group input:focus {
+    border-color: #05ad98;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(5, 173, 152, 0.1);
+}
+
+/* Input com Prefixo R$ */
+.input-with-prefix {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d0e8e5;
+    border-radius: 8px;
+    background-color: #fafdfd;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.input-with-prefix:focus-within {
+    border-color: #05ad98;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(5, 173, 152, 0.1);
+}
+
+.currency-prefix {
+    padding: 0.75rem 0.85rem;
+    background-color: #e8f8f6;
+    color: #05ad98;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-right: 1px solid #d0e8e5;
+}
+
+.input-with-prefix input {
+    border: none;
+    padding: 0.75rem 1rem;
+    outline: none;
+    width: 100%;
+    font-size: 1rem;
+    color: #1a3330;
+    background: transparent;
+}
+
+/* Layout lado a lado */
+.plantao-form-row {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.split-60 { flex: 6; }
+.split-40 { flex: 4; }
+
+@media (max-width: 500px) {
+    .plantao-form-row {
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+}
+
+/* ── Botões de Ação do Fluxo ────────────────────────────── */
+.plantao-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-plantao-submit {
+    padding: 0.8rem 1.8rem;
+    background-color: #05ad98;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-plantao-submit:hover:not(:disabled) {
+    background-color: #049e8b;
+    transform: translateY(-1px);
+}
+
+.btn-plantao-submit:disabled {
+    background-color: #b0ccc9;
+    cursor: not-allowed;
+}
+
+.btn-plantao-cancel {
+    padding: 0.8rem 1.5rem;
+    background-color: #ffffff;
+    color: #7fa8a2;
+    border: 1px solid #d0e8e5;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.btn-plantao-cancel:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+    border-color: #fca5a5;
+}
+
+/* ── Alerta de Erro e Sucesso ────────────────────────────── */
+.error-alert-box {
+    background-color: #fee2e2;
+    color: #ef4444;
+    border: 1px solid #fca5a5;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.cadastro-plantao-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 0;
+}
+
+.success-icon-circle {
+    width: 64px;
+    height: 64px;
+    background-color: #e6f7f0;
+    color: #10b981;
+    font-size: 1.8rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 1.25rem;
+    border: 2px solid #10b981;
+}
+
+.cadastro-plantao-success h2 {
+    color: #0f2f2b;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.cadastro-plantao-success p {
+    color: #7fa8a2;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    max-width: 750px;
+}
+
+.success-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.btn-plantao-link {
+    background: none;
+    border: none;
+    color: #05ad98;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.btn-plantao-link:hover {
+    color: #049e8b;
+}

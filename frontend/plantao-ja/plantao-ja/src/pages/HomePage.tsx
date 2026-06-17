@@ -17,7 +17,6 @@ const HomePage: React.FC = () => {
                     </div>
                 </div>
                 <div className="hero-image">
-                    {/* Imagem Free License do Unsplash focada em ambiente médico/tecnologia */}
                     <img 
                         src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80" 
                         alt="Médicos analisando relatórios em um tablet" 
@@ -25,23 +24,34 @@ const HomePage: React.FC = () => {
                 </div>
             </section>
 
-            {/* Seção Sobre / Gestores */}
+            {/* Seção Sobre (Foco no Gestor e no Fluxo do Hospital) */}
             <section id="about" className="info-section alternate-bg">
                 <div className="section-content">
-                    <h2>Gestão de Escalas Sem Dor de Cabeça</h2>
+                    <h2>Sobre o Plantão Já</h2>
                     <p>
-                        Para diretores e gestores hospitalares, o <strong>Plantão Já</strong> reduz o tempo gasto preenchendo furos na escala. Publique vagas instantaneamente, gerencie confirmações e tenha um dashboard completo da cobertura do seu hospital em tempo real.
+                        O <strong>Plantão Já</strong> nasce para desburocratizar a gestão de escalas médicas. Oferecemos aos diretores e gestores hospitalares a conveniência de <strong>cadastrar seus hospitais e publicar ofertas de plantões</strong> em tempo real, eliminando a bagunça dos grupos de mensagens. 
+                    </p>
+                    <p style={{ marginTop: '1rem' }}>
+                        Tenha o controle total de quem cobre suas escalas: visualize o perfil dos profissionais interessados e preencha furos na agenda com apenas alguns cliques.
                     </p>
                 </div>
             </section>
 
-            {/* Seção Serviços / Médicos */}
+            {/* Seção Serviços (Foco nos Médicos e no Fluxo de Aprovação) */}
             <section id="services" className="info-section">
                 <div className="section-content">
-                    <h2>Encontre Seu Próximo Plantão</h2>
-                    <p>
-                        Chega de dezenas de grupos de WhatsApp. Aqui você filtra os plantões por especialidade, valor e localização. Inscreva-se com um clique e organize sua agenda médica de forma totalmente digital e transparente.
-                    </p>
+                    <h2>Como Funciona Nosso Serviço</h2>
+                    <div className="services-flow" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: '1.5rem' }}>
+                        <div className="flow-step">
+                            <strong>1. Publicação de Ofertas:</strong> O gestor do hospital cria e publica as vagas de plantão especificando a especialidade, horários e valores.
+                        </div>
+                        <div className="flow-step">
+                            <strong>2. Inscrição de Médicos:</strong> Médicos cadastrados na plataforma navegam pelas oportunidades disponíveis, filtram por suas preferências e se <strong>inscrevem nos plantões</strong> desejados.
+                        </div>
+                        <div className="flow-step">
+                            <strong>3. Aprovação e Match:</strong> O gestor avalia as inscrições recebidas e <strong>aprova o médico ideal</strong> para aquela vaga. Uma vez aprovado, o profissional está pronto para trabalhar no hospital com tudo alinhado de forma transparente!
+                        </div>
+                    </div>
                 </div>
             </section>
 

@@ -7,6 +7,8 @@ import SignInMedicoPage from './pages/SignInMedicoPage';
 import PrivateRoute from './pages/PrivateRoute';
 import DashboardPage from './pages/DashboardPage';
 import SignInHospitalPage from './pages/SignInHospitalPage';
+import DashboardMedicoPage from './pages/DashboardMedicoPage';
+import CadastrarPlantaoPage from './pages/CadastrarPlantaoPage';
 import './App.css'
 
 const App: React.FC<{}> = () => {
@@ -19,7 +21,6 @@ const App: React.FC<{}> = () => {
               <li><Link to="/" className="logo">Plantão Já</Link></li>
               <li><a href="#about">Sobre</a></li>
               <li><a href="#services">Serviços</a></li>
-              <li><a href="#contact">Contato</a></li>
               <li id="login"><Link to="/login">Login</Link></li>
               <li className='dropdown-li'><a className="dropdown">Primeiro Aceso</a>
                 <ul className="dropdown-content">
@@ -36,6 +37,8 @@ const App: React.FC<{}> = () => {
           <Route path="/signin-médico" element={<SignInMedicoPage />} />
           <Route path="/signin-hospital" element={<SignInHospitalPage/>} />
           <Route path="/dashboard" element={<PrivateRoute><DashboardPage/></PrivateRoute>}/>
+          <Route path="/dashboard-medico" element={<PrivateRoute><DashboardMedicoPage/></PrivateRoute>}/>
+          <Route path="/cadastrar-plantao" element={<PrivateRoute><CadastrarPlantaoPage /></PrivateRoute>} />
         </Routes>
       </BrowserRouter>
       <footer>

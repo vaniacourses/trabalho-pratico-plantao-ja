@@ -1,5 +1,18 @@
 // types/index.ts
 
+export interface PlantaoRequestDTO {
+    dataInicio: string;    // Formato ISO string para o LocalDateTime do Java (ex: "2026-06-18T07:00:00")
+    dataFim: string;       // Formato ISO string
+    remuneracao: number;   // Mapeia para o BigDecimal do Java
+    status: string;        // Ex: "ABERTO", "FINALIZADO"
+    hospitalId: string;    // UUID do hospital que gerou o plantão
+}
+
+export interface Plantao extends PlantaoRequestDTO {
+    id: number;            // Gerado automaticamente pelo json-server / Banco de Dados
+}
+
+
 export interface Endereco {
   id?: number;
   cep: string;

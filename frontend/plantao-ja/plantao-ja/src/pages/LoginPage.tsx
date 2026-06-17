@@ -1,5 +1,6 @@
 import React, { useState } from  "react";
 import {useNavigate} from "react-router-dom";
+
 import './LoginPage.css'
 
 interface LoginPageProps {
@@ -52,34 +53,39 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
         }
     };
 
-    const handleLoginMedico = async (e: React.SubmitEvent) => {
-        e.preventDefault(); // Impede a página de recarregar e quebrar o React
-        // Aqui você faz a chamada de login ou usa o React Router
+    const handleLoginMedico = async (e: React.FormEvent) => {
+        e.preventDefault(); 
         setStatus("Verificando...");
 
         try {
-        const response = await fetch(`${urlMedico}?email=${email}`);
+            const response = await fetch(`${urlMedico}?email=${email}`);
 
-        if (response.ok) {
-            const data = await response.json();
-            if(!data) {
-                alert("Médico não cadastrado!")
-                setStatus("");
-                return;
+            if (response.ok) {
+                const medicos = await response.json();
+                const data = medicos[0]; // Ajustado para pegar o primeiro registro do array, igual ao gestor
+                
+                if(!data) {
+                    alert("Médico não cadastrado!");
+                    setStatus("");
+                    return;
+                }
+
+                if (data.password !== password) {
+                    alert("Senha inválida!");
+                    setStatus("");
+                    return;
+                }
+
+                localStorage.setItem("user", JSON.stringify(data));
+                setStatus("Sucesso!");
+                setEmail(''); 
+                setPassword("");
+                
+                // Redireciona o médico para o painel dele
+                navigate("/dashboard-medico");
+            } else {
+                setStatus("Submission failed. Server returned an error.");
             }
-
-            if (data.password !== password) {
-                alert("Senha inválida!")
-                return;
-            }
-
-            localStorage.setItem("user",JSON.stringify(data));
-            setStatus(`Successo: ${data.message}`);
-            setEmail(''); 
-            setPassword("");// Clear form
-        } else {
-            setStatus("Submission failed. Server returned an error.");
-        }
         } catch (error) {
             console.error("Connection error:", error);
             setStatus("Could not connect to the backend server.");

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:8082/hospital";
+const API_URL = "http://localhost:8080/hospital";
 
 type Hospital = {
   id?: string;

@@ -1,0 +1,232 @@
+/* ── Container Principal ────────────────────────────────── */
+.med-dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: #0f2f2b;
+    background-color: #f8fbfb;
+    min-height: 100vh;
+}
+
+/* ── Header do Painel ───────────────────────────────────── */
+.med-dashboard-header {
+    background: #ffffff;
+    padding: 1.8rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(5, 173, 152, 0.05);
+    margin-bottom: 2rem;
+    border: 1px solid #eef5f4;
+}
+
+.med-header-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.med-header-info h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0f2f2b;
+}
+
+.med-badge {
+    font-size: 0.75rem;
+    background-color: #e8f8f6;
+    color: #05ad98;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.med-header-subtitle {
+    font-size: 0.95rem;
+    color: #7fa8a2;
+    margin-top: 0.5rem;
+}
+
+/* ── Bloco de Filtros ────────────────────────────────────── */
+.search-filter-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    border: 1px solid #eef5f4;
+    margin-bottom: 2.5rem;
+}
+
+.search-filter-card h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    color: #1a3330;
+}
+
+.filter-form-row {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.filter-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4a7570;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.filter-group select,
+.filter-group input {
+    padding: 0.75rem 1rem;
+    border: 1px solid #d0e8e5;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #1a3330;
+    background-color: #fafdfd;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    border-color: #05ad98;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(5, 173, 152, 0.1);
+}
+
+/* ── Grid e Cards de Plantões ───────────────────────────── */
+.plantoes-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: #0f2f2b;
+}
+
+.plantoes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.plantao-card {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e8f2f1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.plantao-card:hover:not(.card-disabled) {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(5, 173, 152, 0.08);
+    border-color: #05ad98;
+}
+
+.plantao-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.spec-badge {
+    background-color: #e8f8f6;
+    color: #05ad98;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+}
+
+.price-tag {
+    font-weight: 700;
+    color: #05ad98;
+    font-size: 1.1rem;
+}
+
+.plantao-card-body h3 {
+    font-size: 1.15rem;
+    color: #0f2f2b;
+    margin-bottom: 0.3rem;
+}
+
+.location {
+    font-size: 0.85rem;
+    color: #7fa8a2;
+    margin-bottom: 1rem;
+}
+
+.time-info {
+    background-color: #fcfdfe;
+    border: 1px solid #f0f6f5;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    margin-bottom: 1.5rem;
+}
+
+.time-info p {
+    margin: 0.2rem 0;
+    color: #4a7570;
+}
+
+/* ── Botões de Ação ─────────────────────────────────────── */
+.btn-action {
+    width: 100%;
+    padding: 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-apply {
+    background-color: #05ad98;
+    color: #ffffff;
+}
+
+.btn-apply:hover {
+    background-color: #049e8b;
+}
+
+.btn-success {
+    background-color: #e6f7f0;
+    color: #10b981;
+    cursor: not-allowed;
+    border: 1px solid #10b981;
+}
+
+/* Estado desativado pós inscrição */
+.card-disabled {
+    opacity: 0.85;
+    background-color: #fafdfd;
+}
+
+.no-results {
+    text-align: center;
+    padding: 3rem;
+    background: #ffffff;
+    border-radius: 12px;
+    color: #7fa8a2;
+    border: 1px dashed #b0ccc9;
+}
+
+@media (max-width: 600px) {
+    .filter-form-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

@@ -3,11 +3,11 @@ import type { HospitalPayload } from "../types";
 import type { SpringPage } from "../types";
 import type { Hospital } from "../types";
 
-const BASE_URL = "http://localhost:8082"; // porta padrão do Spring Boot
+const BASE_URL = "http://localhost:5002"; // porta padrão do Spring Boot
 
 export const hospitalService = {
   getAll: async (page = 0, size = 10): Promise<SpringPage<Hospital>> => {
-    const res = await fetch(`${BASE_URL}/hospital?page=${page}&size=${size}`);
+    const res = await fetch(`${BASE_URL}/hospitais`);
     if (!res.ok) throw new Error("Erro ao buscar hospitais");
     return res.json();
     // ⬆️ retorna a Page inteira — seu hook vai acessar .content
