@@ -7,6 +7,7 @@ const DashboardPage = () => {
         localStorage.getItem("user") || "{}"
     );
 
+
     return (
         <>
             <h1>Bem-vindo {user.nome}</h1>

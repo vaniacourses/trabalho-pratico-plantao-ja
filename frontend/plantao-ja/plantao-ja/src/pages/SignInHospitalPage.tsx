@@ -1,12 +1,11 @@
 import React, { useState } from  "react";
 import { Link } from "react-router-dom";
+import { useHospitais } from "../hooks/useHospitals";
 //import './SignInHospitalPage.css'
 
 interface SignInHospitalPageProps {
     title?: string;
 }
-
-const url = "http://localhost:5002/hospital"
 
 const user = JSON.parse(
   localStorage.getItem("user") || "{}"
@@ -22,24 +21,17 @@ const SignInHospitalPage: React.FC<SignInHospitalPageProps> = ({title = "Cadastr
     const [cidade, setCidade] = useState("")
     const [estado, setEstado] = useState("")
     const [complemento, setComplemento] = useState("")
-    const [statusCadastro] = useState(true)
     const [status, setStatus] = useState(true)
+
+    const { criarHospital } = useHospitais();
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault()
         status: true
-        const endereco = {cep, rua, numero, cidade, estado, complemento}
-        const nota = null
-        const hospital = { nome, gestorId: user.id, cnpj, endereco, statusCadastro, nota}
+        const endereco = {cep, rua, numero: Number(numero), complemento}
+        const hospital = { nome, cnpj, statusCadastro:"ATIVO", notaMedia:0, endereco, gestorId: user.id}
         try {
-            const response = await fetch ( url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(hospital)
-            })
-            await response.json();
+            await criarHospital(hospital);
             setNome("")
             setCnpj("")
             setCep("")
@@ -48,9 +40,7 @@ const SignInHospitalPage: React.FC<SignInHospitalPageProps> = ({title = "Cadastr
             setCidade("")
             setEstado("")
             setComplemento("")
-            if(response.ok){
-                setStatus(false)
-            }
+            setStatus(false)
         } catch(error) {
             console.error("Connection error:", error);
         }
