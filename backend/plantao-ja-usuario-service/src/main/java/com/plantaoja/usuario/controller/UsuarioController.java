@@ -7,6 +7,7 @@ import com.plantaoja.usuario.util.InfoUsuario;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -25,5 +26,14 @@ public class UsuarioController {
     @PostMapping
     public InfoUsuario cadastrarUsuario(@RequestBody @Valid UsuarioCreate usuarioCreate) {
         return usuarioService.cadastrarUsuario(usuarioCreate);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
+        Usuario usuario = usuarioService.buscarPorId(id);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuario);
     }
 }
