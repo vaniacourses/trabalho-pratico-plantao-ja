@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useHospitais } from '../hooks/useHospitals';
 
 
 const DashboardPage = () => {
@@ -7,6 +8,7 @@ const DashboardPage = () => {
         localStorage.getItem("user") || "{}"
     );
 
+    const { hospitais, loading, error } = useHospitais();
 
     return (
         <>
@@ -16,7 +18,14 @@ const DashboardPage = () => {
                 <p>
                     <Link to="/signin-hospital">Cadastrar Hospital</Link>
                 </p>
-
+                {loading === "loading" && <p>Carregando hospitais...</p>}
+                {error && <p>{error}</p>}
+                {hospitais.map(hospital => (
+                    <div key={hospital.id}>
+                        <h2>{hospital.nome}</h2>
+                        <p>{hospital.statusCadastro}</p>
+                    </div>
+                ))}
                 <p>
                     Cadastrar Plantão
                 </p>
