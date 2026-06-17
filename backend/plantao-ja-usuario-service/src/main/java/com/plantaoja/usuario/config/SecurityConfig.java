@@ -55,9 +55,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         System.out.println("***************** Executou o método securityFilterChain de SecurityFilterChain");
+        
         httpSecurity
             .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
+            
           
             .csrf(c -> c.disable())
             .cors(c -> c.configurationSource(corsConfigurationSource()))
@@ -66,6 +67,7 @@ public class SecurityConfig {
 
                 .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
                 .requestMatchers(HttpMethod.GET, "/usuarios").permitAll()
+                .requestMatchers(HttpMethod.GET, "/usuarios/{id}").permitAll()
 
 
 
