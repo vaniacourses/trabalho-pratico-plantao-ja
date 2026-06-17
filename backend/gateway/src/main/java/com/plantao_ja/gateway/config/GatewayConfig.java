@@ -11,20 +11,20 @@ public class GatewayConfig {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("client", r -> r
-                        .path("/client")
-                        .uri("http://localhost:8082/"))
-                .route("staff", r -> r
-                        .path("/staff")
-                        .uri("http://localhost:8083/"))
-                .route("cep - Brasilapi", r -> r
-                        .path("/cep/v1/**")
-                        .filters(f -> f.rewritePath("/cep/v1/(?<cep>.*)", "/api/cep/v1/${cep}"))
-                        .uri("https://brasilapi.com.br"))
-                .route("cep - viacep", r -> r
-                        .path("/cep/v2/**")
-                        .filters(f -> f.rewritePath("/cep/v2/(?<cep>.*)", "/ws/${cep}/json/"))
-                        .uri("https://viacep.com.br"))
+
+                .route("usuarios-service", r -> r
+                        .path(
+                                "/usuarios/**",
+                                "/medicos/**",
+                                "/autenticacao/**"
+                        )
+                        .uri("http://localhost:8082"))
+                .route("plantao-service", r -> r
+                        .path("/plantoes/**")
+                        .uri("http://localhost:8888"))
+                .route("hospital-service", r -> r
+                        .path("/hospital/**")
+                        .uri("http://localhost:8081"))
                 .build();
     }
 }

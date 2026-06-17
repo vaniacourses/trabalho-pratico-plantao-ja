@@ -40,14 +40,16 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
     networks:
       - app-network
+    ports:
+      - "8081:8081"
 
 
-plantao-service:
+  plantao-service:
     build: 
       context: ./backend/plantao-ja-plantao-service 
       dockerfile: Dockerfile
     ports:
-      - "8888:8083"
+      - "8888:8888"
     environment:
       
       - HOSPITAL_API_URL=http://hospital-service:8080/hospital/
@@ -68,6 +70,8 @@ plantao-service:
     container_name: gateway
     networks:
       - app-network
+    ports:
+      - "8080:8080"
 
   frontend:
     build: ./frontend/plantao-ja/plantao-ja
