@@ -23,7 +23,7 @@ public class GatewayConfig {
                         .path("/plantoes/**")
                         .uri("http://localhost:8888"))
                 .route("hospital-service", r -> r
-                        .path("/hospital/**")
+                        .path("/hospital/**", "/endereco/**")
                         .uri("http://localhost:8081"))
                 .build();
     }
