@@ -1,20 +1,3 @@
 {
-  "gestor": [
-    {
-      "nome": "Bicheiro Francis",
-      "password": "1234senha",
-      "email": "bicheiro@gmail.com",
-      "status": true,
-      "cargo": "Medico Geral",
-      "id": 1
-    },
-    {
-      "nome": "rrrr",
-      "password": "123456",
-      "email": "rrr@gmail.com",
-      "status": true,
-      "cargo": "Medico",
-      "id": 2
-    }
-  ]
+  "gestor": []
 }

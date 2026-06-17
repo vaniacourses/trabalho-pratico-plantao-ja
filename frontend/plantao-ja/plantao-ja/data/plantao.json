@@ -1,28 +1,4 @@
 {
   "plantoes": [
-    {
-      "id": 1,
-      "dataInicio": "2026-06-18T07:00:00",
-      "dataFim": "2026-06-18T19:00:00",
-      "remuneracao": 1200,
-      "status": "ABERTO",
-      "hospitalId": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
-    },
-    {
-      "dataInicio": "2026-06-19T12:00",
-      "dataFim": "2026-06-20T11:00",
-      "remuneracao": 1900,
-      "status": "ABERTO",
-      "hospitalId": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
-      "id": 2
-    },
-    {
-      "dataInicio": "2026-06-19T18:00",
-      "dataFim": "2026-06-19T20:00",
-      "remuneracao": 200,
-      "status": "ABERTO",
-      "hospitalId": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
-      "id": 3
-    }
   ]
 }

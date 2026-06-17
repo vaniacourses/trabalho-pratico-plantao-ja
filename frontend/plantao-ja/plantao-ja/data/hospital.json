@@ -1,43 +1,8 @@
 {
   "hospitais": {
-    "content": [
-      {
-        "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
-        "nome": "Rede D'OR UFF - Unidade I",
-        "cnpj": "28.523.215/0001-06",
-        "notaMedia": 4.5,
-        "statusCadastro": "ATIVO",
-        "gestorId": 1,
-        "endereco": {
-          "id": 10,
-          "cep": "24210-240",
-          "rua": "Rua Passo da Pátria",
-          "numero": 156,
-          "cidade": "Niterói",
-          "estado": "RJ",
-          "complemento": "Em frente à Baía de Guanabara"
-        }
-      },
-      {
-        "id": "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e",
-        "nome": "Rede D'OR UFF - Unidade II",
-        "cnpj": "28.523.215/0001-06",
-        "notaMedia": 0.0,
-        "statusCadastro": "ATIVO",
-        "gestorId": 1,
-        "endereco": {
-          "id": 11,
-          "cep": "24210-240",
-          "rua": "Rua Passo da Pátria",
-          "numero": 156,
-          "cidade": "Niterói",
-          "estado": "RJ",
-          "complemento": "Bloco D"
-        }
-      }
-    ],
-    "totalPages": 1,
-    "totalElements": 2,
+    "content": [],
+    "totalPages": 0,
+    "totalElements": 0,
     "number": 0,
     "size": 10
   }
