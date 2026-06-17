@@ -25,6 +25,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
     networks:
       - app-network
+    ports:
+      - "8082:8082"
 
   hospital-service:
     build: ./backend/plantao-ja-hospital-service
