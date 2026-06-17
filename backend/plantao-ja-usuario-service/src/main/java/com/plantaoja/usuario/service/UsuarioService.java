@@ -38,6 +38,10 @@ public class UsuarioService {
         }
     }
 
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id).orElse(null);
+    }
+
     public List<Usuario> recuperarUsuarios() {
         return usuarioRepository.findAll();
     }
