@@ -9,6 +9,6 @@ COPY src ./src
 
 RUN chmod +x mvnw
 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD ["./mvnw", "spring-boot:run"]
