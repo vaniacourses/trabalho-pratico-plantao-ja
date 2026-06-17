@@ -39,6 +39,22 @@ services:
     networks:
       - app-network
 
+
+plantao-service:
+    build: 
+      context: ./backend/plantao-ja-plantao-service 
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8083"
+    environment:
+      
+      - HOSPITAL_API_URL=http://hospital-service:8080/hospital/
+    networks:
+      - app-network
+    depends_on:
+      - hospital-service 
+
+
   scraping-service:
     build: ./backend/plantao-ja-scraping-service
     container_name: scraping-service
