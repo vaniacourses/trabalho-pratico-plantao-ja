@@ -1,46 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { plantaoService } from '../services/plantaoService';
+import { hospitalService } from '../services/hospitalService';
+import type { Plantao, Hospital, LoadingState } from '../types';
 import './DashboardMedicoPage.css';
-
-interface Plantao {
-    id: number;
-    hospital: string;
-    especialidade: string;
-    cidade: string;
-    estado: string;
-    data: string;
-    horario: string;
-    valor: string;
-}
 
 const DashboardMedicoPage: React.FC = () => {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-    // Mock de plantões disponíveis cadastrados pelos gestores
-    const [plantoes, setPlantoes] = useState<Plantao[]>([
-        { id: 1, hospital: "Hospital Central de Niterói", especialidade: "Pediatria", cidade: "Niterói", estado: "RJ", data: "19/06/2026", horario: "07:00 - 19:00", valor: "R$ 1.200,00" },
-        { id: 2, hospital: "UPA Zona Sul", especialidade: "Clínica Geral", cidade: "Niterói", estado: "RJ", data: "20/06/2026", horario: "19:00 - 07:00", valor: "R$ 1.400,00" },
-        { id: 3, hospital: "Hospital Barra D'Or", especialidade: "Cardiologia", cidade: "Rio de Janeiro", estado: "RJ", data: "21/06/2026", horario: "08:00 - 20:00", valor: "R$ 1.800,00" },
-        { id: 4, hospital: "Hospital Copa Star", especialidade: "Clínica Geral", cidade: "Rio de Janeiro", estado: "RJ", data: "22/06/2026", horario: "07:00 - 19:00", valor: "R$ 1.500,00" },
-        { id: 5, hospital: "Santa Casa", especialidade: "Ortopedia", cidade: "São Gonçalo", estado: "RJ", data: "25/06/2026", horario: "19:00 - 07:00", valor: "R$ 1.600,00" },
-    ]);
+    // Estados para carregar os dados reais das APIs via hooks/services
+    const [plantoes, setPlantoes] = useState<Plantao[]>([]);
+    const [hospitais, setHospitais] = useState<Hospital[]>([]);
+    const [loading, setLoading] = useState<LoadingState>("idle");
+    const [error, setError] = useState<string | null>(null);
 
-    // Estados de controle dos Filtros
-    const [filtroEspecialidade, setFiltroEspecialidade] = useState("");
-    const [filtroCidade, setFiltroCidade] = useState("");
+    // Estado para gerenciar as inscrições locais feitas pelo médico
     const [inscricoes, setInscricoes] = useState<number[]>([]);
 
-    // Ação de Candidatar-se / Aceitar Vaga (Envia para aprovação do gestor)
+    // Carrega os dados de ambos os microserviços de forma assíncrona
+    useEffect(() => {
+        const carregarDadosDoSistema = async () => {
+            setLoading("loading");
+            setError(null);
+            try {
+                const [dadosPlantoes, respostaHospitais] = await Promise.all([
+                    plantaoService.getAll(),
+                    hospitalService.getAll()
+                ]);
+
+                setPlantoes(dadosPlantoes || []);
+                // Extrai a lista de dentro do envelope do SpringPage (.content)
+                setHospitais(respostaHospitais?.content || []);
+                setLoading("success");
+            } catch (err: any) {
+                setError("Erro ao sincronizar banco de dados de oportunidades.");
+                setLoading("error");
+            }
+        };
+
+        carregarDadosDoSistema();
+    }, []);
+
+    // Helper: Varre a lista de hospitais para encontrar o Nome Real correspondente ao UUID
+    const obterNomeHospital = (hospitalId: string): string => {
+        const encontrado = hospitais.find(h => h.id === hospitalId);
+        return encontrado ? encontrado.nome : "Hospital Geral Parceiro";
+    };
+
+    // Helper: Formata LocalDateTime do Java ("2026-06-18T07:00:00") para o padrão brasileiro
+    const formatarDataHora = (isoString: string): { data: string; hora: string } => {
+        try {
+            const dataObjeto = new Date(isoString);
+            if (isNaN(dataObjeto.getTime())) return { data: isoString, hora: "" };
+            return {
+                data: dataObjeto.toLocaleDateString('pt-BR'),
+                hora: dataObjeto.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+            };
+        } catch {
+            return { data: isoString, hora: "" };
+        }
+    };
+
+    // Ação de Candidatar-se
     const handleCandidatar = (id: number) => {
         if (inscricoes.includes(id)) return;
         setInscricoes([...inscricoes, id]);
         alert("Inscrição realizada com sucesso! O gestor do hospital será notificado para aprovação.");
     };
 
-    // Filtragem em tempo real
-    const plantoesFiltrados = plantoes.filter(plantao => {
-        const matchesEspecialidade = filtroEspecialidade === "" || plantao.especialidade === filtroEspecialidade;
-        const matchesCidade = filtroCidade === "" || plantao.cidade.toLowerCase().includes(filtroCidade.toLowerCase());
-        return matchesEspecialidade && matchesCidade;
+    // Filtra apenas para garantir que o médico veja vagas com status aberto
+    const plantoesDisponiveis = plantoes.filter(plantao => {
+        return plantao.status === "ABERTO" || plantao.status === "ATIVO";
     });
 
     return (
@@ -51,65 +80,44 @@ const DashboardMedicoPage: React.FC = () => {
                     <h1>Olá, Dr(a). {user.nome || "Médico"}</h1>
                     <span className="med-badge">CRM Ativo</span>
                 </div>
-                <p className="med-header-subtitle">Encontre e candidate-se a plantões disponíveis na sua região.</p>
+                <p className="med-header-subtitle">Encontre e candidate-se a plantões disponíveis na rede.</p>
             </header>
 
-            {/* Seção de Filtros de Busca */}
-            <section className="search-filter-card">
-                <h2>🔍 Filtrar Oportunidades</h2>
-                <div className="filter-form-row">
-                    <div className="filter-group">
-                        <label>Especialidade</label>
-                        <select 
-                            value={filtroEspecialidade} 
-                            onChange={(e) => setFiltroEspecialidade(e.target.value)}
-                        >
-                            <option value="">Todas as Especialidades</option>
-                            <option value="Clínica Geral">Clínica Geral</option>
-                            <option value="Pediatria">Pediatria</option>
-                            <option value="Cardiologia">Cardiologia</option>
-                            <option value="Ortopedia">Ortopedia</option>
-                        </select>
-                    </div>
-
-                    <div className="filter-group">
-                        <label>Cidade / Localização</label>
-                        <input 
-                            type="text" 
-                            placeholder="Ex: Niterói" 
-                            value={filtroCidade}
-                            onChange={(e) => setFiltroCidade(e.target.value)}
-                        />
-                    </div>
-                </div>
-            </section>
-
-            {/* Listagem de Plantões */}
+            {/* Listagem de Plantões Reais de acordo com o Banco */}
             <section className="plantoes-section">
-                <h2>📅 Vagas Disponíveis ({plantoesFiltrados.length})</h2>
+                <h2>📅 Vagas Disponíveis ({plantoesDisponiveis.length})</h2>
                 
-                {plantoesFiltrados.length === 0 ? (
+                {loading === "loading" && <p className="loading-text">Sincronizando escalas com o barramento...</p>}
+                {error && <p className="error-text">{error}</p>}
+                
+                {loading === "success" && plantoesDisponiveis.length === 0 ? (
                     <div className="no-results">
-                        <p>Nenhum plantão encontrado para os filtros selecionados.</p>
+                        <p>Nenhum plantão ativo disponível no momento.</p>
                     </div>
                 ) : (
                     <div className="plantoes-grid">
-                        {plantoesFiltrados.map((plantao) => {
+                        {plantoesDisponiveis.map((plantao) => {
                             const jaInscrito = inscricoes.includes(plantao.id);
+                            const nomeHospital = obterNomeHospital(plantao.hospitalId);
+                            const inicio = formatarDataHora(plantao.dataInicio);
+                            const fim = formatarDataHora(plantao.dataFim);
+
                             return (
                                 <div key={plantao.id} className={`plantao-card ${jaInscrito ? 'card-disabled' : ''}`}>
                                     <div className="plantao-card-header">
-                                        <span className="spec-badge">{plantao.especialidade}</span>
-                                        <span className="price-tag">{plantao.valor}</span>
+                                        <span className="spec-badge">Oportunidade</span>
+                                        <span className="price-tag">
+                                            {plantao.remuneracao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                        </span>
                                     </div>
                                     
                                     <div className="plantao-card-body">
-                                        <h3>{plantao.hospital}</h3>
-                                        <p className="location">📍 {plantao.cidade} - {plantao.estado}</p>
+                                        <h3>{nomeHospital}</h3>
+                                        <p className="location">🏥 Unidade Hospitalar Conveniada</p>
                                         
                                         <div className="time-info">
-                                            <p>📆 <strong>Data:</strong> {plantao.data}</p>
-                                            <p>⏰ <strong>Horário:</strong> {plantao.horario}</p>
+                                            <p>📆 <strong>Data:</strong> {inicio.data}</p>
+                                            <p>⏰ <strong>Horário:</strong> {inicio.hora} até {fim.hora}</p>
                                         </div>
                                     </div>
 
