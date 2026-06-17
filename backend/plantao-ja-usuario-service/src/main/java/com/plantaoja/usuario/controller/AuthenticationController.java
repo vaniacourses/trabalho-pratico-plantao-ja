@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("autenticacao")   
+@RequestMapping("autenticacao")
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UsuarioRepository usuarioRepository;
 
-    @PostMapping("login")  
+    @PostMapping("login")
     public ResponseEntity<TokenResponse> login(@Valid @RequestBody UsuarioLogin usuarioLogin,
                                                HttpServletResponse response) {
         authenticationManager.authenticate(
@@ -34,7 +34,9 @@ public class AuthenticationController {
         Usuario usuario = usuarioRepository.findByEmail(usuarioLogin.getEmail()).orElseThrow();
         String accessToken = jwtService.generateAccessToken(usuario);
 
-        return new ResponseEntity<>(new TokenResponse(
-            accessToken, usuario.getId(), usuario.getNome(), usuario.getRole().name()), HttpStatus.OK);
+        return new ResponseEntity<>(
+            new TokenResponse(accessToken, usuario.getId(), usuario.getNome(), usuario.getRole().name()),
+            HttpStatus.OK
+        );
     }
 }

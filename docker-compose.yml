@@ -5,8 +5,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: plantao_ja
-    ports:
-      - "3306:3306"
     networks:
       - app-network
     healthcheck:
@@ -18,30 +16,38 @@ services:
   usuario-service:
     build: ./backend/plantao-ja-usuario-service
     container_name: usuario-service
-    ports:
-      - "8081:8080"
     depends_on:
       mysql:
         condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/plantao_ja?useTimezone=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
     networks:
       - app-network
 
   hospital-service:
     build: ./backend/plantao-ja-hospital-service
     container_name: hospital-service
-    ports:
-      - "8082:8080"
     depends_on:
       mysql:
         condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/plantao_ja?useTimezone=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
     networks:
       - app-network
 
   scraping-service:
     build: ./backend/plantao-ja-scraping-service
     container_name: scraping-service
-    ports:
-      - "5000:5000"
+    networks:
+      - app-network
+    
+  gateway:
+    build: ./backend/gateway
+    container_name: gateway
     networks:
       - app-network
 
@@ -50,13 +56,9 @@ services:
     container_name: frontend
     ports:
       - "5173:5173"
-    depends_on:
-      - usuario-service
-      - hospital-service
-      - scraping-service
     networks:
       - app-network
       
 networks:
   app-network:
-    driver: bridge  
+    driver: bridge

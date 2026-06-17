@@ -58,36 +58,20 @@ public class SecurityConfig {
         httpSecurity
             .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            // Cross Site Request Forgery - Um tipo de ataque utilizado em session based autentication
-            // Em aplicações restful, como este tipo de ataque não acontece, deve ser desabilitado por questão
-            // de desempenho. Na linha abaixo é possível mudar para method reference.
+          
             .csrf(c -> c.disable())
             .cors(c -> c.configurationSource(corsConfigurationSource()))
 
             .authorizeHttpRequests(authorize -> authorize
-               .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
 
-               .requestMatchers(HttpMethod.POST, "/produtos/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
-               .requestMatchers(HttpMethod.PUT, "/produtos/**").hasRole(Role.ADMIN.name())
-               .requestMatchers(HttpMethod.DELETE, "/produtos/**").hasRole(Role.ADMIN.name())
-
-                // qq usuário pode cadastrar um usuário
                 .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
                 .requestMatchers(HttpMethod.GET, "/usuarios").permitAll()
 
-                // qq usuário pode se logar
-                .requestMatchers(HttpMethod.POST, "/autenticacao/login").permitAll()
 
-                // Para acessar /favoritos é preciso estar logado
-                //.requestMatchers(HttpMethod.GET,"/favoritos/**").authenticated()
-                //.requestMatchers(HttpMethod.POST,"/favoritos/**").authenticated()
-                //.requestMatchers(HttpMethod.DELETE,"/favoritos/**").authenticated())
 
                 .anyRequest().authenticated())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(ex -> {
-                // Quando o usuário não está logado, por default, é retornado o erro 403 - FORBIDDEN
-                // Estamos mudando para 401 - UNAUTHORIZED
                 ex.authenticationEntryPoint((request, response, authException) -> {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
                     response.setContentType("application/json");
@@ -98,10 +82,6 @@ public class SecurityConfig {
                         }
                         """);
                 });
-
-                // Quando o usuário está autenticado mas não possui o perfil (ROLE) necessário para
-                // acessar o recurso, por default é retornado o erro 401 - UNAUTHORIZED.
-                // Estamos mudando para 403 - FORBIDDEN
                 ex.accessDeniedHandler((request, response, accessDeniedException) -> {
                     response.setStatus(HttpStatus.FORBIDDEN.value());
                     response.setContentType("application/json");
@@ -114,13 +94,12 @@ public class SecurityConfig {
                 });
             });
 
-        return httpSecurity.build();  // Cria um objeto SecurityFilterChain.
+        return httpSecurity.build(); 
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         System.out.println("1. ***** Executou o método passwordEncoder()");
-        // BCryptPasswordEncoder é o algoritmo recomendado para efetuar o hash das senhas.
         return new BCryptPasswordEncoder();
     }
 
@@ -132,16 +111,7 @@ public class SecurityConfig {
         return provider;
     }
 
-    // Quando tentarmos efetuar um login através de AuthenticationController, o método
-    // authenticate() de AuthenticationManager vai chamar o método authenticate() de um
-    // AuthenticationProvider (no nosso caso, DaoAuthenticationProvider), que irá chamar
-    // o método loadUserByUsename() de UsuarioService (a classe que implementa a interface
-    // UserDetailsService - que possui o método loadUserByUsername()).
 
-    // O DaoAuthenticationProvider irá chamar o método loadUserByUsername() de
-    // usuarioService para recuperar do banco de dados a senha do usuário. Em seguida ele
-    // usa o passwordEncoder para criptografar a senha recebida do usuário e a compra com
-    // a senha recuperada do banco de dados.
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
         throws Exception {

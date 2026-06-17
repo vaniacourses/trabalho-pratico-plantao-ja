@@ -3,9 +3,9 @@ spring:
     name: plantao-ja-usuario-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/plantao_ja?useTimezone=true&serverTimezone=UTC
-    username: root
-    password: password
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysql:3306/plantao_ja?useTimezone=true&serverTimezone=UTC}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
   jpa:
     hibernate:
       ddl-auto: update

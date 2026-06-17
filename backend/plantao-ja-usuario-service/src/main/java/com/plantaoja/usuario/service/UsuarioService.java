@@ -24,10 +24,12 @@ public class UsuarioService {
             .orElse(null);
         if (usuarioCadastrado == null) {
             Usuario usuario = new Usuario(
+                null,
                 usuarioCreate.getNome(),
                 usuarioCreate.getEmail(),
                 passwordEncoder.encode(usuarioCreate.getSenha()),
-                Role.USER);
+                Role.USER,
+                true);
             usuarioRepository.save(usuario);
             return new InfoUsuario(true, false, "Usuário cadastrado com sucesso!");
         }
