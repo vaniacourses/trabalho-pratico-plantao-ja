@@ -1,11 +1,12 @@
 package com.example.plantao_ja_plantao_service.controller;
+
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,10 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.transaction.annotation.Transactional; // 🚨 IMPORTANTE
 
 import com.example.plantao_ja_plantao_service.model.Plantao;
 import com.example.plantao_ja_plantao_service.model.PlantaoRequestDTO;
@@ -53,13 +53,11 @@ public class PlantaoController {
         }
     }
 
-    // --- ADICIONADO: GET Geral para a Dashboard do Médico e do Gestor ---
     @GetMapping
     public ResponseEntity<List<Plantao>> getAllPlantoes() {
         return ResponseEntity.ok(plantaoService.findAll());
     }
 
-    // --- ADICIONADO: GET Filtrado por Hospital (útil para o Painel do Gestor) ---
     @GetMapping("/hospital/{hospitalId}")
     public ResponseEntity<List<Plantao>> getPlantoesPorHospital(@PathVariable UUID hospitalId) {
         return ResponseEntity.ok(plantaoService.findByHospitalId(hospitalId));
@@ -84,7 +82,31 @@ public class PlantaoController {
         }
     }
 
-    // Rota: PATCH /plantoes/{id}/aceitar?medicoId=5
+    // Rota: PATCH /plantoes/{id}/inscrever?medicoId=5
+    // Único método de inscrição — bate exatamente com o que o frontend chama.
+    @PatchMapping("/{id}/inscrever")
+    @Transactional
+    public ResponseEntity<?> inscreverMedico(@PathVariable Long id, @RequestParam Long medicoId) {
+        try {
+            Plantao plantao = plantaoRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Plantão não encontrado"));
+
+            if (plantao.getStatus() != PlantaoStatus.ABERTO && plantao.getStatus() != PlantaoStatus.ATIVO) {
+                throw new IllegalStateException("Este plantão não está mais aceitando inscrições.");
+            }
+
+            if (!plantao.getMedicoInscritosIds().contains(medicoId)) {
+                plantao.getMedicoInscritosIds().add(medicoId);
+            }
+
+            Plantao atualizado = plantaoRepository.saveAndFlush(plantao);
+            return ResponseEntity.ok(atualizado);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Rota: PATCH /plantoes/{id}/aceitar?medicoId=5&gestorId=1
     @PatchMapping("/{id}/aceitar")
     public ResponseEntity<?> aceitarMedico(@PathVariable Long id, @RequestParam Long medicoId, @RequestParam Long gestorId) {
         try {
@@ -102,26 +124,5 @@ public class PlantaoController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
-
-    @PutMapping("/{plantaoId}/inscrever/{medicoId}")
-    @Transactional
-    public Plantao inscreverMedico(Long plantaoId, Long medicoId) {
-        // 1. Busca o plantão direto do banco
-        Plantao plantao = plantaoRepository.findById(plantaoId)
-                .orElseThrow(() -> new RuntimeException("Plantão não encontrado"));
-
-        // 2. Valida o status
-        if (!"ABERTO".equals(plantao.getStatus())) {
-            throw new IllegalStateException("Este plantão não está mais aceitando inscrições.");
-        }
-
-        // 3. Adiciona o ID do médico na lista (O JPA rastreia essa alteração automaticamente)
-        if (!plantao.getMedicoInscritosIds().contains(medicoId)) {
-            plantao.getMedicoInscritosIds().add(medicoId);
-        }
-
-        // 4. Salva e força o banco a atualizar imediatamente com o flush
-        return plantaoRepository.saveAndFlush(plantao); 
     }
 }

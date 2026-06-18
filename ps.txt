@@ -1,6 +1,0 @@
-NAME               IMAGE                                          COMMAND                  SERVICE            CREATED          STATUS                    PORTS
-gateway            trabalho-pratico-plantao-ja-gateway            "/usr/local/bin/mvn-…"   gateway            25 minutes ago   Up 25 minutes             0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
-hospital-service   trabalho-pratico-plantao-ja-hospital-service   "/usr/local/bin/mvn-…"   hospital-service   25 minutes ago   Up 25 minutes             0.0.0.0:8081->8081/tcp, [::]:8081->8081/tcp
-mysql              mysql:8                                        "docker-entrypoint.s…"   mysql              25 minutes ago   Up 25 minutes (healthy)   3306/tcp, 33060/tcp
-plantao-service    trabalho-pratico-plantao-ja-plantao-service    "/usr/local/bin/mvn-…"   plantao-service    20 minutes ago   Up 20 minutes             0.0.0.0:8888->8083/tcp, [::]:8888->8083/tcp
-usuario-service    trabalho-pratico-plantao-ja-usuario-service    "/usr/local/bin/mvn-…"   usuario-service    25 minutes ago   Up 25 minutes             0.0.0.0:8082->8082/tcp, [::]:8082->8082/tcp

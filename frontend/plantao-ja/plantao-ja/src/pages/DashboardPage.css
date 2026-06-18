@@ -281,3 +281,75 @@
     padding: 1rem 0;
 }
 .error-text { color: #ef4444; }
+
+/* ── Adições para inscritos/aceitos no plantão ───────────────────────── */
+
+.shift-item-wrapper {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+}
+
+.candidatos-box {
+    background: #fff7e6;
+    padding: 0.75rem 1rem;
+    border-top: 1px dashed #f0c674;
+}
+
+.candidatos-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #8a6d1f;
+    margin-bottom: 0.5rem;
+}
+
+.candidato-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    font-size: 0.85rem;
+    color: #4a3a0e;
+}
+
+.btn-aceitar {
+    background: #05ad98;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-aceitar:hover {
+    background: #049e8b;
+}
+
+.aceitos-box {
+    background: #e9f9f5;
+    padding: 0.6rem 1rem;
+    border-top: 1px dashed #9fe0d3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.aceitos-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #0f6e5e;
+    margin-right: 0.4rem;
+}
+
+.aceito-badge {
+    background: #05ad98;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+}

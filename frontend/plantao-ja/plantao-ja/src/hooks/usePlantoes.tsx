@@ -25,7 +25,7 @@ export const usePlantoes = () => {
         setLoading(true);
         setError(null);
         try {
-            return await plantaoService.getPorHospital(hospitalId);
+            return await plantaoService.getByHospitalId(hospitalId);
         } catch (err: any) {
             setError(err.message || "Erro ao carregar os plantões do hospital.");
             return [];
