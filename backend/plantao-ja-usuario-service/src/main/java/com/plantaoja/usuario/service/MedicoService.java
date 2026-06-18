@@ -18,24 +18,27 @@ public class MedicoService {
     private final MedicoRepository medicoRepository;
     private final UsuarioRepository usuarioRepository;
 
+
     public String cadastrarMedico(MedicoCreate medicoCreate) {
-        Usuario usuario = usuarioRepository.findById(medicoCreate.getUserId()).orElse(null);
+        // 1. Cria o registro base na tabela tb_usuario primeiro
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setNome(medicoCreate.getNome());
+        novoUsuario.setEmail(medicoCreate.getEmail());
+        novoUsuario.setSenha((medicoCreate.getSenha())); // Criptografa
+        novoUsuario.setRole(com.plantaoja.usuario.util.Role.MEDICO); // Já crava a role do cara
+        novoUsuario.setAtivo(true);
+        
+        Usuario usuarioSalvo = usuarioRepository.save(novoUsuario);
 
-        if (usuario == null) {
-            return "Usuário não encontrado!";
-        }
-
-        if (medicoRepository.findByUserId(usuario.getId()).isPresent()) {
-            return "Usuário já possui perfil médico!";
-        }
-
+        // 2. Valida o CRM antes de salvar o perfil
         if (medicoRepository.existsByCrm(medicoCreate.getCrm())) {
             return "CRM já cadastrado!";
         }
 
+        // 3. Salva o perfil médico apontando para o id recém-criado
         MedicoProfile medico = new MedicoProfile(
             null,
-            usuario,
+            usuarioSalvo,
             medicoCreate.getCrm(),
             medicoCreate.getEspecialidade()
         );

@@ -8,5 +8,6 @@ public record PlantaoRequestDTO(
     UUID hospitalId, 
     LocalDateTime dataInicio, 
     LocalDateTime dataFim, 
-    BigDecimal remuneracao
+    BigDecimal remuneracao,
+    Especialidade especialidade // Enviado como String pelo Front, o Spring converte automaticamente
 ) {}

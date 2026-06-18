@@ -1,5 +1,5 @@
-import React, { useState } from  "react";
-import {useNavigate} from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import './LoginPage.css'
 
@@ -7,100 +7,75 @@ interface LoginPageProps {
     title?: string;
 }
 
-const urlGestor = "http://localhost:5001/gestor"
-const urlMedico = "http://localhost:5003/medico"
+const URL_LOGIN = "http://localhost:8082/autenticacao/login";
 
-const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
-    const navigate = useNavigate() 
-    const [option, setOption] = useState("Login para Gestor")
-    const [email, setEmail] = useState(""); 
-    const [password, setPassword] = useState("")
-    const [status, setStatus] = useState("");  
+const LoginPage: React.FC<LoginPageProps> = ({ title = "Login" }) => {
+    const navigate = useNavigate();
+    const [option, setOption] = useState("Login para Gestor");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [status, setStatus] = useState("");
 
-    const handleLoginGestor = async (e: React.SubmitEvent) => {
+    const executarLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setStatus("Verificando...");
 
         try {
-        const response = await fetch(`${urlGestor}?email=${email}`);
-
-        if (response.ok) {
-            const gestores = await response.json()
-            const gestor = gestores[0];
-            console.log(gestores[0])
-            if (!gestor) {
-                alert("Usuário não encontrado");
-                setStatus("");
-                return;
-            }
-
-            if (gestor.password !== password) {
-                alert("Senha inválida");
-                return;
-            }
-            localStorage.setItem(
-            "user",
-            JSON.stringify(gestor)
-            );
-
-            navigate("/dashboard");
-        } else {
-            setStatus("Submission failed. Server returned an error.");
-        }
-        } catch (error) {
-            console.error("Connection error:", error);
-            setStatus("Could not connect to the backend server.");
-        }
-    };
-
-    const handleLoginMedico = async (e: React.FormEvent) => {
-        e.preventDefault(); 
-        setStatus("Verificando...");
-
-        try {
-            const response = await fetch(`${urlMedico}?email=${email}`);
+            const response = await fetch(URL_LOGIN, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    senha: password
+                })
+            });
 
             if (response.ok) {
-                const medicos = await response.json();
-                const data = medicos[0]; // Ajustado para pegar o primeiro registro do array, igual ao gestor
-                
-                if(!data) {
-                    alert("Médico não cadastrado!");
-                    setStatus("");
+                const data = await response.json();
+
+                if (!data || !data.token) {
+                    setStatus("Falha na resposta: Token não encontrado.");
                     return;
                 }
 
-                if (data.password !== password) {
-                    alert("Senha inválida!");
-                    setStatus("");
-                    return;
-                }
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify({
+                    id: data.idUsuario,
+                    nome: data.nome,
+                    role: data.role
+                }));
 
-                localStorage.setItem("user", JSON.stringify(data));
                 setStatus("Sucesso!");
-                setEmail(''); 
+                setEmail('');
                 setPassword("");
-                
-                // Redireciona o médico para o painel dele
-                navigate("/dashboard-medico");
+
+                if (data.role === "MEDICO") {
+                    navigate("/dashboard-medico");
+                } else {
+                    navigate("/dashboard");
+                }
+            } else if (response.status === 401 || response.status === 403) {
+                setStatus("E-mail ou senha inválidos.");
             } else {
-                setStatus("Submission failed. Server returned an error.");
+                setStatus("Erro ao tentar fazer login no servidor.");
             }
         } catch (error) {
             console.error("Connection error:", error);
-            setStatus("Could not connect to the backend server.");
+            setStatus("Não foi possível conectar ao servidor.");
         }
     };
 
-    const handleOption = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
-        setOption(prev => prev === "Login para Gestor" ? "Login para Medico" : "Login para Gestor")
-        setEmail("")
-        setPassword("")
-        setStatus("")
-    }
+    const handleOption = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setOption(prev => prev === "Login para Gestor" ? "Login para Medico" : "Login para Gestor");
+        setEmail("");
+        setPassword("");
+        setStatus("");
+    };
 
-    const isGestor = option === "Login para Gestor"
+    const isGestor = option === "Login para Gestor";
 
     return (
         <div className="login-page">
@@ -112,39 +87,25 @@ const LoginPage: React.FC<LoginPageProps> = ({ title = "Login"}) => {
                 </header>
 
                 <div className="login-tabs">
-
-                    <button className={`login-tab ${isGestor ? "active" : ""}`} onClick={handleOption}> 
+                    <button className={`login-tab ${isGestor ? "active" : ""}`} onClick={handleOption}>
                         {option}
                     </button>
                 </div>
-                {isGestor ? (
-                    <form onSubmit={handleLoginGestor}>
-                        <div id="login-gestor" className="input-group">
-                            <p>Digite o seu Email:</p>
-                            <input type="email" name="email" placeholder="Seu email de gestor" id="email" value={email} 
-                            onChange={(e) => setEmail(e.target.value)}/>
-                        </div>
-                        <div id="login-gestor" className="input-group">
-                            <p>Digite a sua Senha:</p>
-                        <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
-                        onChange={(e) => setPassword(e.target.value)}/>
-                        </div>
-                        <button className="login-btn" type='submit'>Entrar</button>
-                    </form>) : (
-                    <form onSubmit={handleLoginMedico}>
-                        <div id="login-medico" className="input-group">
-                            <p>Digite o seu Email:</p>
-                            <input type="email" name="email" placeholder="douto@gmail.com" id="email" value={email} 
-                            onChange={(e) => setEmail(e.target.value)}/>
-                        </div>
-                        <div id="login-medico" className="input-group">
-                            <p>Digite a sua Senha:</p>
-                            <input type="password" name="senha" placeholder="Senha" id="password" value={password} 
-                            onChange={(e) => setPassword(e.target.value)}/>
-                        </div>
-                        <button type='submit' className="login-btn">Entrar</button>
-                    </form>
-                    )}
+
+                <form onSubmit={executarLogin}>
+                    <div className="input-group">
+                        <label htmlFor="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder={isGestor ? "Seu email de gestor" : "doutor@gmail.com"} value={email}
+                            onChange={(e) => setEmail(e.target.value)} required />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="password">Senha</label>
+                        <input type="password" id="password" name="senha" placeholder="••••••••" value={password}
+                            onChange={(e) => setPassword(e.target.value)} required />
+                    </div>
+                    <button className="login-btn" type='submit'>Entrar</button>
+                </form>
+
                 {status && <p className="login-status">{status}</p>}
             </div>
         </div>

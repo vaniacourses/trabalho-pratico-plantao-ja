@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,9 +33,33 @@ public class Plantao {
     @Column(nullable = false)
     private BigDecimal remuneracao;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private Especialidade especialidade;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PlantaoStatus status;
 
     @Column(name = "hospital_id", nullable = false)
     private UUID hospitalId;
+
+    @ElementCollection
+    @CollectionTable(name = "plantao_medicos_inscritos", joinColumns = @JoinColumn(name = "plantao_id"))
+    @Column(name="medico_inscrito_id")
+    private List<Long> medicoInscritosIds = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "plantao_medicos_aceitos", joinColumns = @JoinColumn(name="plantao_id"))
+    @Column(name="medico_id")
+    private List<Long> medicoAceitosIds = new ArrayList<>();
+
+    // Se o Lombok der problema no seu ambiente de build, adicione manualmente:
+    public List<Long> getMedicoInscritosIds() {
+        return this.medicoInscritosIds;
+    }
+
+    public List<Long> getMedicoAceitosIds() {
+        return this.medicoAceitosIds;
+    }
 }

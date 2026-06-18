@@ -53,6 +53,13 @@ public class SecurityConfig {
     }
 
     @Bean
+    public org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer webSecurityCustomizer() {
+    return (web) -> web.ignoring()
+        .requestMatchers("/autenticacao/**")
+        .requestMatchers(org.springframework.http.HttpMethod.POST, "/medicos");
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         System.out.println("***************** Executou o método securityFilterChain de SecurityFilterChain");
         
@@ -64,14 +71,11 @@ public class SecurityConfig {
             .cors(c -> c.configurationSource(corsConfigurationSource()))
 
             .authorizeHttpRequests(authorize -> authorize
-
-                .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
-                .requestMatchers(HttpMethod.GET, "/usuarios").permitAll()
-                .requestMatchers(HttpMethod.GET, "/usuarios/{id}").permitAll()
-
-
-
-                .anyRequest().authenticated())
+                .requestMatchers("/autenticacao/login").permitAll()
+                .requestMatchers("/autenticacao/**").permitAll()
+                .requestMatchers("/medicos").permitAll()
+                .anyRequest().permitAll() // 💡 Força o "Permitir Tudo" temporariamente para destravar o seu projeto!
+            )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(ex -> {
                 ex.authenticationEntryPoint((request, response, authException) -> {

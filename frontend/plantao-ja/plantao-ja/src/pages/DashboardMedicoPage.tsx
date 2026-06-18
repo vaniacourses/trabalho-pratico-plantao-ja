@@ -6,15 +6,15 @@ import './DashboardMedicoPage.css';
 
 const DashboardMedicoPage: React.FC = () => {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-
     // Estados para carregar os dados reais das APIs via hooks/services
     const [plantoes, setPlantoes] = useState<Plantao[]>([]);
     const [hospitais, setHospitais] = useState<Hospital[]>([]);
     const [loading, setLoading] = useState<LoadingState>("idle");
     const [error, setError] = useState<string | null>(null);
-
+    
     // Estado para gerenciar as inscrições locais feitas pelo médico
     const [inscricoes, setInscricoes] = useState<number[]>([]);
+    
 
     // Carrega os dados de ambos os microserviços de forma assíncrona
     useEffect(() => {
@@ -60,11 +60,30 @@ const DashboardMedicoPage: React.FC = () => {
         }
     };
 
-    // Ação de Candidatar-se
-    const handleCandidatar = (id: number) => {
-        if (inscricoes.includes(id)) return;
-        setInscricoes([...inscricoes, id]);
-        alert("Inscrição realizada com sucesso! O gestor do hospital será notificado para aprovação.");
+    // 💡 CORRIGIDO: Agora a candidatura bate na rota PATCH do plantao-service via Gateway
+    const handleCandidatar = async (plantaoId: number) => {
+        // Pegamos o ID do médico logado direto do objeto guardado no Login
+        const medicoId = user.id; 
+
+        if (!medicoId) {
+            alert("Erro: Usuário não identificado. Faça login novamente.");
+            return;
+        }
+
+        try {
+            // Dispara a chamada PATCH para: http://localhost:8080/plantoes/{plantaoId}/inscrever?medicoId={medicoId}
+            const plantaoAtualizado = await plantaoService.inscreverMedico(plantaoId, medicoId.toString());
+            
+            // Atualiza a lista local de inscrições com o ID do plantão retornado
+            setInscricoes(prev => [...prev, plantaoId]);
+            
+            // Opcional: Atualiza o estado de plantões para refletir o médico na lista imediatamente
+            setPlantoes(prev => prev.map(p => p.id === plantaoId ? plantaoAtualizado : p));
+
+            alert("Inscrição realizada com sucesso! O gestor do hospital já consegue ver você na lista de candidatos.");
+        } catch (err: any) {
+            alert(err.message || "Erro ao realizar inscrição no servidor.");
+        }
     };
 
     // Filtra apenas para garantir que o médico veja vagas com status aberto
@@ -97,7 +116,11 @@ const DashboardMedicoPage: React.FC = () => {
                 ) : (
                     <div className="plantoes-grid">
                         {plantoesDisponiveis.map((plantao) => {
-                            const jaInscrito = inscricoes.includes(plantao.id);
+                                                    
+                            // 💡 INTEGRADO COM O BACKEND: 
+                            // Ele estará desabilitado se o médico acabou de clicar OU se o ID dele já consta na lista vinda do MySQL
+                            const jaInscrito = inscricoes.includes(plantao.id) || plantao.medicoInscritosIds?.includes(Number(user.id));
+                            
                             const nomeHospital = obterNomeHospital(plantao.hospitalId);
                             const inicio = formatarDataHora(plantao.dataInicio);
                             const fim = formatarDataHora(plantao.dataFim);
@@ -119,8 +142,7 @@ const DashboardMedicoPage: React.FC = () => {
                                             <p>📆 <strong>Data:</strong> {inicio.data}</p>
                                             <p>⏰ <strong>Horário:</strong> {inicio.hora} até {fim.hora}</p>
                                         </div>
-                                    </div>
-
+                                    </div>   
                                     <div className="plantao-card-footer">
                                         <button 
                                             onClick={() => handleCandidatar(plantao.id)}

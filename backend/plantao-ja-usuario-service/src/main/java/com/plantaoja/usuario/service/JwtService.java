@@ -5,57 +5,55 @@ import com.plantaoja.usuario.util.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Service
 public class JwtService {
 
-    @Value("chaveteste")
-    private String secret;
+    // Chave gerada automaticamente, sempre com tamanho seguro (256 bits) para HS256.
+    // Reinicia a cada restart do serviço — tokens antigos expiram, mas isso é
+    // inofensivo em desenvolvimento. Para produção, mover para uma variável de
+    // ambiente persistente.
+    private final SecretKey secret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    @Value("2 horas")
-    private String accessTokenExpiration;
+    // 2 horas em milissegundos
+    private final long accessTokenExpiration = 2 * 60 * 60 * 1000;
 
     public String generateAccessToken(Usuario usuario) {
-        final long tokenExpiration = Long.parseLong(accessTokenExpiration); // 2 horas
-        return generateToken(usuario, tokenExpiration);
+        return generateToken(usuario, accessTokenExpiration);
     }
 
-    private String generateToken(Usuario usuario, long tokenExpiration) {
+    private String generateToken(Usuario usuario, long tokenExpirationMillis) {
         return Jwts.builder()
-            // subject => algo que identifica unicamente um usuário
-            .subject(usuario.getId().toString())
-            .claim("name", usuario.getNome())  
-            .claim("role", usuario.getRole())   
-            .issuedAt(new Date())
-            .expiration(new Date(System.currentTimeMillis() + tokenExpiration * 1000))
-           
-            .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
-            .compact();
+                .subject(usuario.getId().toString())
+                .claim("name", usuario.getNome())
+                .claim("role", usuario.getRole())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + tokenExpirationMillis))
+                .signWith(secret)
+                .compact();
     }
 
     public boolean validateToken(String token) {
         try {
             Claims claims = getClaims(token);
-            boolean valido = claims.getExpiration().after(new Date());
-            return valido;
-        }
-        catch(JwtException e) {
+            return claims.getExpiration().after(new Date());
+        } catch (JwtException e) {
             return false;
         }
     }
 
     public Claims getClaims(String token) {
-        Claims claims = Jwts.parser()
-            .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
-            .build()
-            .parseSignedClaims(token)
-            .getPayload();
-        return claims;
+        return Jwts.parser()
+                .verifyWith(secret)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     public Long getUserIdFromToken(String token) {

@@ -43,31 +43,46 @@ services:
     ports:
       - "8081:8081"
 
-
-  plantao-service:
-    build: 
-      context: ./backend/plantao-ja-plantao-service 
-      dockerfile: Dockerfile
-    ports:
-      - "8888:8888"
-    environment:
-      
-      - HOSPITAL_API_URL=http://hospital-service:8080/hospital/
-    networks:
-      - app-network
-    depends_on:
-      - hospital-service 
-
-
   scraping-service:
     build: ./backend/plantao-ja-scraping-service
     container_name: scraping-service
     networks:
       - app-network
-    
+
+  plantao-service:
+    build: 
+      context: ./backend/plantao-ja-plantao-service 
+      dockerfile: Dockerfile
+    container_name: plantao-service
+    ports:
+      - "8888:8083"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      hospital-service:
+        condition: service_started
+    environment:
+    # ADICIONADO: Provedor de dados obrigatório para o Hibernate criar as tabelas de plantão no MySQL
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/plantao_ja?useTimezone=true&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      # 💡 ADICIONADO: Força o Spring a carregar o driver correto do MySQL
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      # Mantido para conversar internamente com a porta do hospital
+      HOSPITAL_API_URL: http://hospital-service:8081/hospital/
+      # 💡 ADICIONE ESTAS DUAS LINHAS ABAIXO:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+    networks:
+      - app-network
+  
   gateway:
     build: ./backend/gateway
     container_name: gateway
+    depends_on:
+      - usuario-service
+      - hospital-service
+      - plantao-service
     networks:
       - app-network
     ports:

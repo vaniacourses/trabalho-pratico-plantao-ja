@@ -14,7 +14,9 @@ const CadastrarPlantaoPage: React.FC = () => {
     const [dataInicio, setDataInicio] = useState("");
     const [dataFim, setDataFim] = useState("");
     const [remuneracao, setRemuneracao] = useState("");
+    const [especialidade, setEspecialidade] = useState(""); 
     const [sucesso, setSucesso] = useState(false);
+
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
@@ -29,7 +31,7 @@ const CadastrarPlantaoPage: React.FC = () => {
             dataInicio: dataInicio, // Formato string ISO capturado pelo datetime-local
             dataFim: dataFim,
             remuneracao: Number(remuneracao), // Converte para número (BigDecimal no Java)
-            status: "ABERTO", // Status padrão inicial conforme a regra de negócio
+            especialidade: especialidade as any, // Ou: especialidade as EspecialidadeMedica
             hospitalId: hospitalSelecionado // UUID do hospital selecionado
         };
 
@@ -86,6 +88,24 @@ const CadastrarPlantaoPage: React.FC = () => {
                                     required
                                 />
                             </div>
+                        </div>
+
+                        <div className="plantao-form-group">
+                            <label htmlFor="especialidade">Especialidade Exigida</label>
+                            <select
+                                id="especialidade"
+                                value={especialidade}
+                                onChange={(e) => setEspecialidade(e.target.value)}
+                                required
+                            >
+                                <option value="">Selecione a especialidade do plantão...</option>
+                                <option value="CLINICA_GERAL">Clínica Geral</option>
+                                <option value="PEDIATRIA">Pediatria</option>
+                                <option value="CARDIOLOGIA">Cardiologia</option>
+                                <option value="ORTOPEDIA">Ortopedia</option>
+                                <option value="ANESTESIOLOGIA">Anestesiologia</option>
+                                <option value="GINECOLOGIA">Ginecologia</option>
+                            </select>
                         </div>
 
                         {/* Datas de Início e Término em Grid Lado a Lado */}

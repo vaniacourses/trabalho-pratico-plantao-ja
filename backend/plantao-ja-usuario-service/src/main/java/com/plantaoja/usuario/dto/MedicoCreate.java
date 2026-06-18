@@ -10,7 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MedicoCreate {
-    private Long userId;
+    private String nome;         // 💡 Adicionado
+    private String email;        // 💡 Adicionado
+    private String senha;        // 💡 Adicionado
     private String crm;
-    private String especialidade;
+    private String especialidade; // (ou especialidade)
 }

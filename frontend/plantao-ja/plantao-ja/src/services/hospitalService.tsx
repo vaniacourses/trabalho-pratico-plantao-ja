@@ -1,12 +1,12 @@
 import type { HospitalPayload, SpringPage, Hospital } from "../types";
 
 // Aponta para a raiz do recurso hospitais no json-server
-const BASE_URL = "http://localhost:5002/hospitais"; 
+const BASE_URL = "http://localhost:8080/hospital"; 
 
 export const hospitalService = {
   // 1. GET: Retorna o objeto envelopado exatamente como está no JSON
   getAll: async (page = 0, size = 10): Promise<SpringPage<Hospital>> => {
-    const res = await fetch(BASE_URL);
+    const res = await fetch(`${BASE_URL}?page=${page}&size=${size}`);
     if (!res.ok) throw new Error("Erro ao buscar hospitais");
     return res.json(); 
   },
@@ -14,37 +14,15 @@ export const hospitalService = {
   // 2. CREATE: Faz a mágica de ler a estrutura atual, injetar o novo registro e atualizar o bloco
   create: async (payload: HospitalPayload): Promise<Hospital> => {
     // Passo A: Busca o estado atual do objeto envelopado
-    const getRes = await fetch(BASE_URL);
-    if (!getRes.ok) throw new Error("Erro ao ler banco de dados mock.");
-    const estruturaAtual: SpringPage<Hospital> = await getRes.json();
-
-    // Passo B: Cria o novo hospital simulando a geração de ID do banco de dados
-    const novoHospital: Hospital = {
-      ...payload,
-      id: crypto.randomUUID(), // Gera uma Hash/UUID idêntica à do Java
-      notaMedia: 0
-    };
-
-    // Passo C: Atualiza a lista interna do content e recalcula os contadores do Spring
-    const novoContent = [...(estruturaAtual.content || []), novoHospital];
-    const novaEstrutura: SpringPage<Hospital> = {
-      content: novoContent,
-      totalPages: Math.ceil(novoContent.length / 10),
-      totalElements: novoContent.length,
-      number: estruturaAtual.number || 0,
-      size: estruturaAtual.size || 10
-    };
-
-    // Passo D: Faz um PUT substituindo o objeto 'hospitais' inteiro no json-server
-    const putRes = await fetch(BASE_URL, {
-      method: "PUT", // O segredo é o PUT na raiz do recurso para salvar o envelopamento completo
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(novaEstrutura),
+    const res = await fetch(BASE_URL, {
+      method: "POST", 
+      headers: { 
+        "Content-Type": "application/json" 
+      },
+      body: JSON.stringify(payload), // Envia apenas { nome, gestorId }
     });
-
-    if (!putRes.ok) throw new Error("Erro ao persistir novo hospital na estrutura envelopada.");
-
-    return novoHospital;
+    if (!res.ok) throw new Error("Erro ao ler banco de dados.");
+    return res.json();
   },
 
   // 3. DELETE: Varre o content, remove o alvo e salva o bloco atualizado

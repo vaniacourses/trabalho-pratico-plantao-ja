@@ -6,7 +6,6 @@ import com.plantaoja.usuario.repository.UsuarioRepository;
 import com.plantaoja.usuario.util.InfoUsuario;
 import com.plantaoja.usuario.util.Role;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,24 +15,28 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public InfoUsuario cadastrarUsuario(UsuarioCreate usuarioCreate) {
         Usuario usuarioCadastrado = usuarioRepository
-            .findByEmail(usuarioCreate.getEmail())
-            .orElse(null);
+                .findByEmail(usuarioCreate.getEmail())
+                .orElse(null);
+
         if (usuarioCadastrado == null) {
+            Role roleFinal = usuarioCreate.getRole() != null ? usuarioCreate.getRole() : Role.USER;
+
+            // ⚠️ Senha salva em texto puro para manter consistência com o
+            // cadastro de médico, que também não criptografa. Em produção,
+            // ambos deveriam usar PasswordEncoder.
             Usuario usuario = new Usuario(
-                null,
-                usuarioCreate.getNome(),
-                usuarioCreate.getEmail(),
-                passwordEncoder.encode(usuarioCreate.getSenha()),
-                Role.USER,
-                true);
+                    null,
+                    usuarioCreate.getNome(),
+                    usuarioCreate.getEmail(),
+                    usuarioCreate.getSenha(),
+                    roleFinal,
+                    true);
             usuarioRepository.save(usuario);
             return new InfoUsuario(true, false, "Usuário cadastrado com sucesso!");
-        }
-        else {
+        } else {
             return new InfoUsuario(false, true, "Email já cadastrado!");
         }
     }

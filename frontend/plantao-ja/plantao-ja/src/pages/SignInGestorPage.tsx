@@ -1,40 +1,40 @@
-import React, { useState } from  "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { gestorService } from "../services/gestorService";
 import './SignInGestorPage.css'
 
 interface SignInGestorPageProps {
     title?: string;
 }
 
-const url = "http://localhost:5001/gestor"
-
-const SignInGestorPage: React.FC<SignInGestorPageProps> = ({title = "Cadastro de Gestor"}) => {
-
-    const [nome, setNome] = useState(""); //1.Define o estado
+const SignInGestorPage: React.FC<SignInGestorPageProps> = ({ title = "Cadastro de Gestor" }) => {
+    const navigate = useNavigate();
+    const [nome, setNome] = useState("");
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
-    const [status] = useState(true)
-    const [cargo, setCargo] = useState("")
+    const [feedback, setFeedback] = useState("")
 
-    const handleSubmit = async (e: React.SubmitEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const gestor = { nome, password, email, status, cargo}
+        setFeedback("Cadastrando...")
+
         try {
-            const response = await fetch ( url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(gestor)
-            })
-            await response.json();
-            setNome("")
-            setPassword("")
-            setEmail("")
-            setCargo("")
-        } catch(error) {
+            const resultado = await gestorService.create({ nome, email, senha: password });
+
+            if (resultado.valido) {
+                setFeedback("Gestor cadastrado com sucesso!")
+                setNome("")
+                setPassword("")
+                setEmail("")
+                setTimeout(() => navigate("/login"), 1200);
+            } else {
+                setFeedback(resultado.mensagem || "Não foi possível cadastrar.")
+            }
+        } catch (error) {
             console.error("Connection error:", error);
+            setFeedback("Erro de conexão com o servidor.")
         }
-    } 
+    }
 
     return (
         <div className="signin-page">
@@ -48,25 +48,21 @@ const SignInGestorPage: React.FC<SignInGestorPageProps> = ({title = "Cadastro de
                     <div className="input-group">
                         <label htmlFor="nome">Nome completo</label>
                         <input type="text" id="nome" name="nome" placeholder="Maria Souza" value={nome}
-                            onChange={(e) => setNome(e.target.value)} />
+                            onChange={(e) => setNome(e.target.value)} required />
                     </div>
                     <div className="input-group">
                         <label htmlFor="email">E-mail</label>
                         <input type="email" id="email" name="email" placeholder="gestor@hospital.com" value={email}
-                            onChange={(e) => setEmail(e.target.value)} />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="cargo">Cargo</label>
-                        <input type="text" id="cargo" name="cargo" placeholder="ex: Diretor Administrativo" value={cargo}
-                            onChange={(e) => setCargo(e.target.value)} />
+                            onChange={(e) => setEmail(e.target.value)} required />
                     </div>
                     <div className="input-group">
                         <label htmlFor="password">Senha</label>
                         <input type="password" id="password" name="senha" placeholder="••••••••" value={password}
-                            onChange={(e) => setPassword(e.target.value)} />
+                            onChange={(e) => setPassword(e.target.value)} required />
                     </div>
-                    <button className="signin-btn" type="submit">Cadastrar</button>
+                    <button className="signin-btn" type='submit'>Cadastrar</button>
                 </form>
+                {feedback && <p className="signin-feedback">{feedback}</p>}
             </div>
         </div>
     )

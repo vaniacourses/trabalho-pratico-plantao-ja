@@ -16,7 +16,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/hospital")
-@CrossOrigin(origins = "http://localhost:5173")
 public class HospitalController {
 
     @Autowired

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useHospitais } from '../hooks/useHospitals';
-import { plantaoService } from '../services/plantaoService';
+import { plantaoService } from '../services/plantaoService'; // Voltamos para o service para chamadas assíncronas dentro do useEffect
 import type { Plantao, Hospital, LoadingState } from '../types';
 import './DashboardPage.css'; 
 
@@ -10,25 +10,38 @@ const DashboardPage = () => {
         localStorage.getItem("user") || "{}"
     );
 
-    // 1. Dados reais dos Hospitais vindos do Hook existente (Porta 5001)
+    // 1. Dados reais dos Hospitais vindos do Hook existente
     const { hospitais = [], loading: hospitaisLoading, error: hospitaisError } = useHospitais() as {
         hospitais: Hospital[];
         loading: LoadingState;
         error: string | null;
     };
 
-    // 2. Estados para gerenciar os Plantões reais (Porta 5004)
+    // 2. Estados para gerenciar os Plantões reais
     const [plantoes, setPlantoes] = useState<Plantao[]>([]);
     const [plantoesLoading, setPlantoesLoading] = useState<LoadingState>("idle");
     const [plantoesError, setPlantoesError] = useState<string | null>(null);
 
-    // 3. Buscar os plantões reais do barramento ao carregar a página
+    // 3. CORRIGIDO: useEffect correto que escuta a carga dos hospitais do gestor
     useEffect(() => {
-        const carregarPlantoesReais = async () => {
+        const buscarPlantoesDosHospitais = async () => {
+            // Só dispara a busca se os hospitais já tiverem carregado com sucesso
+            if (hospitaisLoading !== "success" || hospitais.length === 0) return;
+
             setPlantoesLoading("loading");
             try {
-                const dados = await plantaoService.getAll();
-                setPlantoes(dados || []);
+                // Faz requisições em paralelo para cada hospital que o gestor possui
+                const promessas = hospitais.map(hospital => 
+                    plantaoService.getByHospitalId(hospital.id)
+                );
+                
+                // Aguarda o retorno de todas as listas: [[plantao1], [plantao2]]
+                const resultados = await Promise.all(promessas);
+                
+                // Achata os arrays em uma única lista de plantões
+                const todosPlantoes = resultados.flat();
+                
+                setPlantoes(todosPlantoes || []);
                 setPlantoesLoading("success");
             } catch (err: any) {
                 setPlantoesError("Não foi possível sincronizar a escala de plantões.");
@@ -36,8 +49,8 @@ const DashboardPage = () => {
             }
         };
 
-        carregarPlantoesReais();
-    }, []);
+        buscarPlantoesDosHospitais();
+    }, [hospitais, hospitaisLoading]); // Executa a lógica assim que os hospitais terminam de carregar
 
     // Helper: Cruza o hospitalId do Plantão com a lista de Hospitais para descobrir o Nome Real
     const obterNomeHospital = (hospitalId: string): string => {
@@ -116,7 +129,7 @@ const DashboardPage = () => {
                         </div>
                     </div>
 
-                    {/* Seção de Plantões Ativos Reais (Porta 5004) */}
+                    {/* Seção de Plantões Ativos Reais */}
                     <div className="dashboard-card">
                         <div className="card-header">
                             <h2>⚡ Plantões Ativos em Captação</h2>
@@ -126,7 +139,7 @@ const DashboardPage = () => {
                             {plantoesError && <p className="error-text">{plantoesError}</p>}
                             
                             {plantoesLoading === "success" && plantoesAtivosReais.length === 0 && (
-                                <p className="empty-text">Não há plantões ativos publicados no momento.</p>
+                                <p className="empty-text">Não há plantões ativos publicados no momento para os seus hospitais.</p>
                             )}
 
                             {plantoesAtivosReais.length > 0 && (
@@ -138,8 +151,10 @@ const DashboardPage = () => {
                                         return (
                                             <div key={plantao.id} className="shift-item">
                                                 <div className="shift-info">
-                                                    {/* Como o DTO do plantão puro não tem especialidade fixa na tabela ainda, mostramos uma tag fixa ou dinâmica */}
-                                                    <span className="shift-specialty">Plantão Médico Geral</span>
+                                                    {/* Tornando a especialidade dinâmica de acordo com o enum retornado do Java */}
+                                                    <span className="shift-specialty">
+                                                        {plantao.especialidade ? plantao.especialidade.replace('_', ' ') : "Plantão Geral"}
+                                                    </span>
                                                     <span className="shift-hospital">
                                                         📍 {obterNomeHospital(plantao.hospitalId)}
                                                     </span>
